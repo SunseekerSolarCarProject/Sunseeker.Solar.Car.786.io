@@ -404,3 +404,175 @@ footer {
   font-size: 0.9rem;
   color: #555;
 }
+
+/* =====================
+   Telemetry Test
+===================== */
+.telemetry-test button {
+  background: var(--wmu-brown);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.75rem 1.1rem;
+}
+
+.telemetry-test button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.telemetry-actions {
+  margin: 1rem 0;
+}
+
+.telemetry-meta {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin: 1rem 0;
+}
+
+.telemetry-meta div {
+  background: white;
+  border-left: 5px solid var(--wmu-gold);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 0.9rem;
+}
+
+.telemetry-meta dt {
+  color: #555;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.telemetry-meta dd {
+  margin: 0.25rem 0 0;
+}
+
+.telemetry-list {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.telemetry-list-item {
+  background: white;
+  border-left: 5px solid var(--wmu-gold);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+}
+
+/* =====================
+   Race Telemetry
+===================== */
+.telemetry-race-header {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.telemetry-race-header h2 {
+  margin-bottom: 0.4rem;
+}
+
+.telemetry-race-header p {
+  margin: 0;
+}
+
+.telemetry-race-header button {
+  background: var(--wmu-brown);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.75rem 1.1rem;
+}
+
+.telemetry-race-header button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.telemetry-summary-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin: 1.5rem 0;
+}
+
+.telemetry-summary-card {
+  background: white;
+  border-left: 5px solid var(--wmu-gold);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 1rem;
+}
+
+.telemetry-summary-card span {
+  color: #555;
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.telemetry-summary-card strong {
+  color: var(--wmu-brown);
+  display: block;
+  font-size: 1.35rem;
+  margin-top: 0.35rem;
+}
+
+.telemetry-progress {
+  margin: 1.5rem 0;
+}
+
+.telemetry-progress-label {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.telemetry-progress-track {
+  background: #e5e5e5;
+  height: 14px;
+  overflow: hidden;
+}
+
+.telemetry-progress-bar {
+  background: var(--wmu-gold);
+  height: 100%;
+  transition: width 0.25s ease;
+  width: 0;
+}
+
+.telemetry-map {
+  background: #e5e5e5;
+  height: 420px;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.telemetry-race-list {
+  max-height: 420px;
+  overflow: auto;
+}
+
+@media (max-width: 700px) {
+  .telemetry-race-header,
+  .telemetry-progress-label {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .telemetry-map {
+    height: 320px;
+  }
+}

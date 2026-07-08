@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Telemetry Test | WMU Sunseeker</title>
+  <link rel="stylesheet" href="Styles.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="team.html">Team</a>
+      <a href="race.html">Races</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="sponsors.html">Sponsors</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="https://sunseekersolarcar-shop.fourthwall.com/" target="_blank">Store</a>
+    </div>
+
+    <div class="nav-logo">
+      <img src="images/Index/SUN.png" alt="Western Michigan University Logo">
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <section class="card telemetry-test">
+    <h2>Telemetry API Test</h2>
+    <p id="telemetryStatus">Checking cagedmotion telemetry...</p>
+    <dl id="telemetryMeta" class="telemetry-meta"></dl>
+
+    <div class="telemetry-actions">
+      <button id="telemetryRefresh" type="button">Refresh</button>
+    </div>
+
+    <ul id="telemetryList" class="telemetry-list"></ul>
+  </section>
+</main>
+
+<footer>© 2026 WMU Sunseeker • Western Michigan University</footer>
+
+<script src="js/telemetry-test.js"></script>
+</body>
+</html>
