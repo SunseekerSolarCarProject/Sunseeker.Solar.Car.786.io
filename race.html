@@ -93,29 +93,34 @@
 <p>Racing pushes our team beyond the classroom, challenging our engineering, teamwork, and problem-solving in real-world conditions.</p>
 </section>
 
-section class="card telemetry-test">
-<details>
-<summary><strong>Live Race Telemetry</strong></summary>
+<section class="card">
+    <h2>Live Race Telemetry</h2>
 
-<p>
-During testing and competition, our telemetry system streams live engineering
-data from the vehicle. Team members can monitor speed, SOC, power consumption, and location in real time.
-</p>
+    <details open>
+        <summary><strong>Telemetry Dashboard</strong></summary>
 
-<p id="telemetryStatus">Connecting to telemetry...</p>
+        <p>
+            During testing and competition, our telemetry system streams live
+            engineering data from the vehicle. Team members can monitor speed,
+            battery state of charge (SOC), power consumption, temperatures,
+            GPS location, and other critical systems in real time.
+        </p>
 
-<dl id="telemetryMeta" class="telemetry-meta"></dl>
+        <p id="telemetryStatus">Connecting to telemetry...</p>
 
-<div class="telemetry-actions">
-<button id="telemetryRefresh" type="button">
-Refresh Live Data
-</button>
-</div>
+        <dl id="telemetryMeta" class="telemetry-meta"></dl>
 
-<ul id="telemetryList" class="telemetry-list"></ul>
+        <div class="telemetry-actions">
+            <button id="telemetryRefresh" type="button">
+                Refresh Live Data
+            </button>
+        </div>
 
-</details>
+        <ul id="telemetryList" class="telemetry-list"></ul>
+
+    </details>
 </section>
+  
 </main>
 
 <footer>
