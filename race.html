@@ -146,19 +146,69 @@
             GPS location, and other critical systems in real time.
         </p>
 
-        <p id="telemetryStatus">Connecting to telemetry...</p>
 
-        <dl id="telemetryMeta" class="telemetry-meta"></dl>
+        <p id="telemetryStatus">
+            Connecting to telemetry...
+        </p>
+
+
+        <dl id="telemetryMeta" class="telemetry-meta">
+
+            <div>
+                <dt>Status</dt>
+                <dd id="car-status">Connecting...</dd>
+            </div>
+
+            <div>
+                <dt>Latitude</dt>
+                <dd id="latitude">--</dd>
+            </div>
+
+            <div>
+                <dt>Longitude</dt>
+                <dd id="longitude">--</dd>
+            </div>
+
+            <div>
+                <dt>Last Update</dt>
+                <dd id="timestamp">--</dd>
+            </div>
+
+        </dl>
+
+
+        <div class="telemetry-map">
+            <h3>Vehicle Location</h3>
+
+            <div id="live-map"></div>
+
+        </div>
+
 
         <div class="telemetry-actions">
+
             <button id="telemetryRefresh" type="button">
                 Refresh Live Data
             </button>
+
         </div>
 
-        <ul id="telemetryList" class="telemetry-list"></ul>
+
+        <ul id="telemetryList" class="telemetry-list">
+
+            <li>
+                GPS Tracking: <strong id="gpsStatus">Waiting...</strong>
+            </li>
+
+            <li>
+                Vehicle Connection: <strong id="connectionStatus">Unknown</strong>
+            </li>
+
+        </ul>
+
 
     </details>
+
 </section>
   
 </main>
