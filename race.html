@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Races | WMU Sunseeker</title>
-  <link rel="stylesheet" href="Styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Races | WMU Sunseeker</title>
+<link rel="stylesheet" href="Styles.css">
 </head>
 <body>
 
@@ -20,7 +20,6 @@
       <a href="calendar.html">Calendar</a>
       <a href="https://sunseekersolarcar-shop.fourthwall.com/" target="_blank">Store</a>
     </div>
-
     <div class="nav-logo">
       <img src="images/Index/SUN.png" alt="Western Michigan University Logo">
     </div>
@@ -29,154 +28,95 @@
 
 <header class="hero small-hero">
   <h1>Races & Competitions</h1>
-  <p>PUT WORDS</p>
+  <p>Follow the WMU Sunseeker team as we test, compete, and innovate.</p>
 </header>
 
 <main>
 
-  <!-- Upcoming Races -->
-  <section class="card">
-    <h2>Upcoming Races</h2>
+<section class="card">
+<h2>Upcoming Races</h2>
+<div class="race-grid">
+<div class="race-card">
+<h3>American Solar Challenge</h3>
+<p><strong>Date:</strong> Summer 2026</p>
+<p><strong>Location:</strong> United States</p>
+<p>A multi-day collegiate solar vehicle race testing efficiency, reliability, and endurance across long-distance routes.</p>
+</div>
+</div>
+</section>
 
-    <div class="race-grid">
+<section class="card">
+<h2>Race Details</h2>
+<details open>
+<summary><strong>American Solar Challenge 2026</strong></summary>
+<p><strong>Date:</strong> Summer 2026</p>
+<p><strong>Location:</strong> United States</p>
+<div class="countdown" data-date="2026-07-01"></div>
+<div class="map-embed">
+<iframe src="https://www.google.com/maps?q=United+States&output=embed" loading="lazy"></iframe>
+</div>
 
-      <div class="race-card">
-        <h3>American Solar Challenge</h3>
-        <p><strong>Date:</strong> Summer 2026</p>
-        <p><strong>Location:</strong> United States</p>
-        <p>
-          A multi-day collegiate solar vehicle race testing efficiency,
-          reliability, and team strategy across long-distance routes.
-        </p>
-      </div>
+<h4>Results & Stats</h4>
+<ul class="race-stats">
+<li>Placement: TBD</li>
+<li>Total Distance: ~1,500 miles</li>
+<li>Average Speed: TBD</li>
+<li>Energy Efficiency: TBD</li>
+</ul>
 
-      </div>
-  </section>
+<div class="gallery-grid">
+<img src="images/races/asc2026/1.jpg" alt="ASC Photo 1">
+<img src="images/races/asc2026/2.jpg" alt="ASC Photo 2">
+<img src="images/races/asc2026/3.jpg" alt="ASC Photo 3">
+</div>
+</details>
+</section>
 
-  <section class="card">
-  <h2>Upcoming Race Details</h2>
+<section class="card">
+<h2>Past Races</h2>
+<div class="race-grid">
+<div class="race-card">
+<h3>ASC Qualifier</h3>
+<p><strong>Year:</strong> 2025</p>
+<p>Vehicle testing, scrutineering, and endurance validation in preparation for national competition.</p>
+</div>
+<div class="race-card">
+<h3>Regional Solar Showcase</h3>
+<p><strong>Year:</strong> 2024</p>
+<p>Public demonstration event highlighting renewable energy, engineering, and community outreach.</p>
+</div>
+</div>
+</section>
 
-  <!-- Upcoming Race -->
-  <details open>
-    <summary><strong>American Solar Challenge 2026</strong></summary>
+<section class="card">
+<h2>Why We Race</h2>
+<p>Racing pushes our team beyond the classroom, challenging our engineering, teamwork, and problem-solving in real-world conditions.</p>
+</section>
 
-    <p><strong>Date:</strong> Summer 2026</p>
-    <p><strong>Location:</strong> United States</p>
+<section class="card telemetry-test">
+<h2>Live Race Telemetry</h2>
+<p>During testing and competition, our telemetry system streams live engineering data from the vehicle. Team members can monitor speed, battery health, motor performance, power consumption, temperatures, and other critical systems in real time.</p>
 
-    <!-- Countdown -->
-    <div class="countdown" data-date="2026-07-01"></div>
+<p id="telemetryStatus">Connecting to telemetry...</p>
 
-    <!-- Map -->
-    <div class="map-embed">
-      <iframe 
-        src="https://www.google.com/maps?q=United+States&output=embed"
-        loading="lazy">
-      </iframe>
-    </div>
+<dl id="telemetryMeta" class="telemetry-meta"></dl>
 
-    <!-- Results -->
-    <h4>Results & Stats</h4>
-    <ul class="race-stats">
-      <li>Placement: TBD</li>
-      <li>Total Distance: ~1,500 miles</li>
-      <li>Average Speed: TBD</li>
-      <li>Energy Efficiency: TBD</li>
-    </ul>
+<div class="telemetry-actions">
+<button id="telemetryRefresh" type="button">Refresh Live Data</button>
+</div>
 
-    <!-- Photo Gallery -->
-    <div class="gallery-grid">
-      <img src="images/races/asc2026/1.jpg">
-      <img src="images/races/asc2026/2.jpg">
-      <img src="images/races/asc2026/3.jpg">
-    </div>
-
-  </details>
-  </section>
-
-  <section class="card">
-  <h2>Upcoming Race Details</h2>
-
-  <!-- Upcoming Race -->
-  <details open>
-    <summary><strong>American Solar Challenge 2026</strong></summary>
-
-    <p><strong>Date:</strong> Summer 2026</p>
-    <p><strong>Location:</strong> United States</p>
-
-    <!-- Countdown -->
-    <div class="countdown" data-date="2026-07-01"></div>
-
-    <!-- Map -->
-    <div class="map-embed">
-      <iframe 
-        src="https://www.google.com/maps?q=United+States&output=embed"
-        loading="lazy">
-      </iframe>
-    </div>
-
-    <!-- Results -->
-    <h4>Results & Stats</h4>
-    <ul class="race-stats">
-      <li>Placement: TBD</li>
-      <li>Total Distance: ~1,500 miles</li>
-      <li>Average Speed: TBD</li>
-      <li>Energy Efficiency: TBD</li>
-    </ul>
-
-    <!-- Photo Gallery -->
-    <div class="gallery-grid">
-      <img src="images/races/asc2026/1.jpg">
-      <img src="images/races/asc2026/2.jpg">
-      <img src="images/races/asc2026/3.jpg">
-    </div>
-
-  </details>
-  </section>
-
-  <!-- Past Races -->
-  <section class="card">
-    <h2>Past Races</h2>
-
-    <div class="race-grid">
-
-      <div class="race-card">
-        <h3>ASC Qualifier</h3>
-        <p><strong>Year:</strong> 2025</p>
-        <p>
-          Vehicle testing, scrutineering, and endurance validation in
-          preparation for national competition.
-        </p>
-      </div>
-
-      <div class="race-card">
-        <h3>Regional Solar Showcase</h3>
-        <p><strong>Year:</strong> 2024</p>
-        <p>
-          Public demonstration event highlighting renewable energy,
-          student engineering, and outreach.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Why We Race -->
-  <section class="card">
-    <h2>Why We Race</h2>
-    <p>
-      Racing pushes our team beyond the classroom. It challenges our
-      engineering decisions, project management skills, and teamwork
-      under real-world constraints — from weather and terrain to time
-      pressure and system failures.
-    </p>
-    <p>
-      Every race is both a competition and a learning experience.
-    </p>
-  </section>
+<ul id="telemetryList" class="telemetry-list"></ul>
+</section>
 
 </main>
 
 <footer>
+© 2026 WMU Sunseeker • Western Michigan University
+</footer>
+
+<script src="js/telemetry-test.js"></script>
+</body>
+</html>
   © 2026 WMU Sunseeker • Western Michigan University
 </footer>
 
