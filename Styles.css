@@ -575,4 +575,31 @@ footer {
   .telemetry-map {
     height: 320px;
   }
+  .telemetry-test details {
+    width: 100%;
+}
+
+.telemetry-test summary {
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding: 10px 0;
+    list-style: none;
+}
+
+.telemetry-test summary::-webkit-details-marker {
+    display: none;
+}
+
+.telemetry-test summary::before {
+    content: "▶ ";
+    transition: transform 0.2s ease;
+}
+
+.telemetry-test details[open] summary::before {
+    content: "▼ ";
+}
+
+.telemetry-test details > *:not(summary) {
+    margin-top: 15px;
 }
