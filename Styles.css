@@ -603,11 +603,12 @@ footer {
 .telemetry-test details > *:not(summary) {
     margin-top: 15px;
 }
-/* ===================================================
-   MOBILE RESPONSIVE
-=================================================== */
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
 
-@media screen and (max-width: 992px) {
+/* Tablets */
+@media (max-width:992px){
 
     .container{
         padding:1rem;
@@ -620,7 +621,7 @@ footer {
     .hero-bar{
         grid-template-columns:1fr;
         text-align:center;
-        gap:1rem;
+        gap:1.5rem;
     }
 
     .hero-left,
@@ -629,30 +630,17 @@ footer {
     }
 
     .hero-right img{
-        height:130px;
-    }
-
-    .hero h1{
-        font-size:2.2rem;
-    }
-
-    .hero p{
-        font-size:1rem;
+        height:120px;
     }
 
     .nav-inner{
         flex-direction:column;
-        gap:15px;
+        gap:1rem;
     }
 
     .nav-links{
-        justify-content:center;
         flex-wrap:wrap;
-        gap:12px;
-    }
-
-    .card{
-        padding:1.5rem;
+        justify-content:center;
     }
 
     .calendar-event{
@@ -663,35 +651,59 @@ footer {
         flex-direction:column;
         align-items:flex-start;
     }
+
+    .telemetry-progress-label{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .telemetry-map{
+        height:320px;
+    }
+
 }
 
-@media screen and (max-width:768px){
+/* Phones */
+@media (max-width:768px){
 
     body{
         font-size:16px;
     }
 
+    .container{
+        padding:1rem;
+    }
+
     .hero{
-        padding:2.5rem 1rem;
+        padding:2rem 1rem;
     }
 
     .hero h1{
-        font-size:1.9rem;
+        font-size:2rem;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+
+    .hero-left img{
+        height:55px;
     }
 
     .hero-right img{
-        height:100px;
+        height:90px;
     }
 
     .nav-links{
-        flex-direction:column;
         width:100%;
+        flex-direction:column;
+        gap:.5rem;
     }
 
     .nav-links a{
         width:100%;
         text-align:center;
-        padding:12px;
+        padding:.9rem;
         border-radius:8px;
         background:#f6f7f8;
     }
@@ -701,22 +713,18 @@ footer {
     .advisor-grid,
     .gallery-grid,
     .image-grid,
-    .race-grid,
+    .meeting-list,
     .social-grid,
     .cta-grid,
-    .meeting-list,
     .sponsor-grid,
     .telemetry-summary-grid,
     .telemetry-meta{
         grid-template-columns:1fr;
     }
 
-    .officer-card img{
-        height:280px;
-    }
-
+    .officer-card img,
     .advisor img{
-        height:280px;
+        height:260px;
     }
 
     .gallery-grid img,
@@ -726,24 +734,31 @@ footer {
 
     iframe{
         width:100%;
-        height:300px;
+        height:320px;
     }
 
     .telemetry-map{
-        height:260px;
+        height:250px;
     }
 
     .telemetry-race-list{
         max-height:none;
     }
 
-    footer{
-        padding:1.5rem 1rem;
-        font-size:.9rem;
+    button,
+    .telemetry-test button,
+    .telemetry-race-header button{
+        width:100%;
     }
+
 }
 
-@media screen and (max-width:480px){
+/* Small Phones */
+@media (max-width:480px){
+
+    .hero{
+        padding:1.5rem .75rem;
+    }
 
     .hero h1{
         font-size:1.6rem;
@@ -753,24 +768,26 @@ footer {
         font-size:.9rem;
     }
 
-    .card{
-        padding:1rem;
-        border-left-width:4px;
-    }
-
     .hero-right img{
-        height:80px;
+        height:70px;
     }
 
     .nav-logo img{
-        height:48px;
+        height:45px;
     }
 
-    button{
-        width:100%;
+    .card{
+        padding:1rem;
     }
 
-    .telemetry-test button{
-        width:100%;
+    .officer-card img,
+    .advisor img{
+        height:220px;
     }
+
+    footer{
+        padding:1.5rem .75rem;
+        font-size:.85rem;
+    }
+
 }
