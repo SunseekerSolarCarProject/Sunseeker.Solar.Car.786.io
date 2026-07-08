@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>Team | WMU Sunseeker</title>
-  <link rel="stylesheet" href="Styles.css" />
+  <link 
+rel="stylesheet" 
+href="https://unpkg.com/leaflet/dist/leaflet.css"
+/>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -111,7 +116,63 @@
 </div>
 </details>
 </section>
+  
+<section class="card">
+    <h2>Live Solar Car Tracking</h2>
 
+    <details open>
+
+        <summary>
+            <strong>Vehicle Location</strong>
+        </summary>
+
+
+        <p>
+            Follow Sunseeker's location during the American Solar Challenge.
+            GPS data from the vehicle telemetry system updates the map in real time.
+        </p>
+
+
+        <p id="mapStatus">
+            Connecting to vehicle GPS...
+        </p>
+
+
+        <div class="map-status">
+
+            <p>
+                <strong>Status:</strong>
+                <span id="car-status">Connecting...</span>
+            </p>
+
+            <p>
+                <strong>Latitude:</strong>
+                <span id="latitude">--</span>
+            </p>
+
+            <p>
+                <strong>Longitude:</strong>
+                <span id="longitude">--</span>
+            </p>
+
+            <p>
+                <strong>Last Update:</strong>
+                <span id="timestamp">--</span>
+            </p>
+
+        </div>
+
+
+        <div class="telemetry-map">
+
+            <div id="live-map"></div>
+
+        </div>
+
+
+    </details>
+
+</section>
 <section class="card">
 <h2>Past Races</h2>
 <div class="race-grid">
@@ -146,66 +207,19 @@
             GPS location, and other critical systems in real time.
         </p>
 
-
         <p id="telemetryStatus">
             Connecting to telemetry...
         </p>
 
-
-        <dl id="telemetryMeta" class="telemetry-meta">
-
-            <div>
-                <dt>Status</dt>
-                <dd id="car-status">Connecting...</dd>
-            </div>
-
-            <div>
-                <dt>Latitude</dt>
-                <dd id="latitude">--</dd>
-            </div>
-
-            <div>
-                <dt>Longitude</dt>
-                <dd id="longitude">--</dd>
-            </div>
-
-            <div>
-                <dt>Last Update</dt>
-                <dd id="timestamp">--</dd>
-            </div>
-
-        </dl>
-
-
-        <div class="telemetry-map">
-            <h3>Vehicle Location</h3>
-
-            <div id="live-map"></div>
-
-        </div>
-
+        <dl id="telemetryMeta" class="telemetry-meta"></dl>
 
         <div class="telemetry-actions">
-
             <button id="telemetryRefresh" type="button">
                 Refresh Live Data
             </button>
-
         </div>
 
-
-        <ul id="telemetryList" class="telemetry-list">
-
-            <li>
-                GPS Tracking: <strong id="gpsStatus">Waiting...</strong>
-            </li>
-
-            <li>
-                Vehicle Connection: <strong id="connectionStatus">Unknown</strong>
-            </li>
-
-        </ul>
-
+        <ul id="telemetryList" class="telemetry-list"></ul>
 
     </details>
 
