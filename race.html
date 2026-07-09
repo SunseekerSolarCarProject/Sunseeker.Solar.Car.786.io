@@ -223,20 +223,23 @@
 
 <script>
 
-const telemetryURL = 
+const telemetryURL =
 "https://cagedmotion.com/ingest-api/run_wsgi.py/api/telemetry/latest";
 
 
 const telemetryMeta = document.getElementById("telemetryMeta");
 const telemetryList = document.getElementById("telemetryList");
 const refreshButton = document.getElementById("telemetryRefresh");
+const solarMap = document.getElementById("solarMap");
 
 
 async function loadTelemetry() {
 
     try {
 
-        const response = await fetch(telemetryURL);
+        const response = await fetch(telemetryURL, {
+            cache: "no-store"
+        });
 
 
         if (!response.ok) {
@@ -249,22 +252,19 @@ async function loadTelemetry() {
         const telemetry = data.latest;
 
 
-
         telemetryMeta.innerHTML = `
+
+            <dt>Status</dt>
+            <dd>🟢 Connected</dd>
 
             <dt>Driver</dt>
             <dd>${telemetry.driver ?? "Unknown"}</dd>
 
-            <dt>Vehicle</dt>
-            <dd>${telemetry.vehicle_year ?? "Unknown"}</dd>
-
             <dt>Device</dt>
-            <dd>${telemetry.device}</dd>
+            <dd>${telemetry.device ?? "Unknown"}</dd>
 
-            <dt>Last Update</dt>
-            <dd>${new Date(
-                telemetry.received_at
-            ).toLocaleString()}</dd>
+            <dt>GPS Fix</dt>
+            <dd>${telemetry.position.fix ?? "Unknown"} satellites</dd>
 
         `;
 
@@ -273,7 +273,7 @@ async function loadTelemetry() {
         telemetryList.innerHTML = `
 
             <li>
-                Battery State:
+                🔋 Battery SOC:
                 <strong>
                 ${telemetry.battery.soc_pct.toFixed(1)}%
                 </strong>
@@ -281,15 +281,7 @@ async function loadTelemetry() {
 
 
             <li>
-                Speed:
-                <strong>
-                ${telemetry.speed.vehicle_mph.toFixed(1)} mph
-                </strong>
-            </li>
-
-
-            <li>
-                Latitude:
+                📍 Latitude:
                 <strong>
                 ${telemetry.position.lat}
                 </strong>
@@ -297,9 +289,9 @@ async function loadTelemetry() {
 
 
             <li>
-                Longitude:
+                📍 Longitude:
                 <strong>
-                ${telemetry.position.lon}
+                ${telemetry.position.lon ?? "N/A"}
                 </strong>
             </li>
 
@@ -308,18 +300,10 @@ async function loadTelemetry() {
                 🛰 GPS:
                 <strong>
                 ${
-                telemetry.position.gps_valid 
-                ? "Online" 
+                telemetry.position.gps_valid
+                ? "Online"
                 : "Offline"
                 }
-                </strong>
-            </li>
-
-
-            <li>
-                🏁 Lap Count:
-                <strong>
-                ${telemetry.race.lap_count}
                 </strong>
             </li>
 
@@ -334,15 +318,34 @@ async function loadTelemetry() {
         `;
 
 
-    } catch(error) {
+
+        // Update Google Maps location
+
+        if(
+            telemetry.position.lat &&
+            telemetry.position.lon
+        ){
+
+            solarMap.src =
+            `https://www.google.com/maps?q=${telemetry.position.lat},${telemetry.position.lon}&output=embed`;
+
+        }
+
+
+
+    } catch(error){
+
+
+        telemetryMeta.innerHTML = `
+        <dt>Status</dt>
+        <dd>🔴 Offline</dd>
+        `;
 
 
         telemetryList.innerHTML = `
-
-            <li>
-                ⚠️ Telemetry connection failed
-            </li>
-
+        <li>
+        ⚠️ Unable to connect to vehicle telemetry
+        </li>
         `;
 
 
@@ -354,15 +357,10 @@ async function loadTelemetry() {
 
 
 
-refreshButton.addEventListener(
-    "click",
-    loadTelemetry
-);
-
+refreshButton.onclick = loadTelemetry;
 
 
 loadTelemetry();
-
 
 
 setInterval(
