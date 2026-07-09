@@ -117,54 +117,50 @@
     <h2>Live Solar Car Tracking</h2>
 
     <details open>
-
-        <summary>
-            <strong>Vehicle Location</strong>
-        </summary>
-
+        <summary><strong>Real-Time Vehicle Tracker</strong></summary>
 
         <p>
-            Follow Sunseeker's location during the American Solar Challenge.
-            GPS data from the vehicle telemetry system updates the map in real time.
+            Follow the WMU Sunseeker solar vehicle during testing and competition.
+            Live telemetry data provides vehicle location, speed, battery status,
+            and race information directly from the car.
         </p>
 
 
-        <p id="mapStatus">
-            Connecting to vehicle GPS...
-        </p>
+        <div class="tracking-dashboard">
+
+            <div class="tracking-info">
+
+                <h3>Vehicle Status</h3>
+
+                <p id="telemetryStatus">
+                    Connecting to solar car...
+                </p>
 
 
-        <div class="map-status">
-
-            <p>
-                <strong>Status:</strong>
-                <span id="car-status">Connecting...</span>
-            </p>
-
-            <p>
-                <strong>Latitude:</strong>
-                <span id="latitude">--</span>
-            </p>
-
-            <p>
-                <strong>Longitude:</strong>
-                <span id="longitude">--</span>
-            </p>
-
-            <p>
-                <strong>Last Update:</strong>
-                <span id="timestamp">--</span>
-            </p>
-
-        </div>
+                <dl id="telemetryMeta" class="telemetry-meta">
+                </dl>
 
 
-        <div class="telemetry-map">
+                <ul id="telemetryList" class="telemetry-list">
+                </ul>
 
-            <div id="live-map"></div>
 
-        </div>
+                <button id="telemetryRefresh">
+                    Refresh Location
+                </button>
 
+            </div>
+
+
+            <div class="tracking-map">
+
+                <iframe
+                    id="solarMap"
+                    src="https://www.google.com/maps?q=42.300404,-85.600000&output=embed"
+                    loading="lazy">
+                </iframe>
+
+            </div>
 
     </details>
 
@@ -186,11 +182,6 @@
 </section>
 
 <section class="card">
-<h2>Why We Race</h2>
-<p>Racing pushes our team beyond the classroom, challenging our engineering, teamwork, and problem-solving in real-world conditions.</p>
-</section>
-
-<section class="card">
     <h2>Live Race Telemetry</h2>
 
     <details open>
@@ -203,22 +194,184 @@
             GPS location, and other critical systems in real time.
         </p>
 
-        <p id="telemetryStatus">
-            Connecting to telemetry...
-        </p>
+        <div class="telemetry-dashboard">
 
-        <dl id="telemetryMeta" class="telemetry-meta"></dl>
+            <h3>Vehicle Information</h3>
 
-        <div class="telemetry-actions">
-            <button id="telemetryRefresh" type="button">
-                Refresh Live Data
+            <dl id="telemetryMeta">
+                <dt>Status</dt>
+                <dd>Loading telemetry...</dd>
+            </dl>
+
+
+            <h3>Live Data</h3>
+
+            <ul id="telemetryList">
+                <li>Waiting for telemetry...</li>
+            </ul>
+
+
+            <button id="telemetryRefresh">
+                Refresh Telemetry
             </button>
+
         </div>
 
-        <ul id="telemetryList" class="telemetry-list"></ul>
-
     </details>
+</section>
 
+
+<script>
+
+const telemetryURL = 
+"https://cagedmotion.com/ingest-api/run_wsgi.py/api/telemetry/latest";
+
+
+const telemetryMeta = document.getElementById("telemetryMeta");
+const telemetryList = document.getElementById("telemetryList");
+const refreshButton = document.getElementById("telemetryRefresh");
+
+
+async function loadTelemetry() {
+
+    try {
+
+        const response = await fetch(telemetryURL);
+
+
+        if (!response.ok) {
+            throw new Error("Telemetry unavailable");
+        }
+
+
+        const data = await response.json();
+
+        const telemetry = data.latest;
+
+
+
+        telemetryMeta.innerHTML = `
+
+            <dt>Driver</dt>
+            <dd>${telemetry.driver ?? "Unknown"}</dd>
+
+            <dt>Vehicle</dt>
+            <dd>${telemetry.vehicle_year ?? "Unknown"}</dd>
+
+            <dt>Device</dt>
+            <dd>${telemetry.device}</dd>
+
+            <dt>Last Update</dt>
+            <dd>${new Date(
+                telemetry.received_at
+            ).toLocaleString()}</dd>
+
+        `;
+
+
+
+        telemetryList.innerHTML = `
+
+            <li>
+                Battery State:
+                <strong>
+                ${telemetry.battery.soc_pct.toFixed(1)}%
+                </strong>
+            </li>
+
+
+            <li>
+                Speed:
+                <strong>
+                ${telemetry.speed.vehicle_mph.toFixed(1)} mph
+                </strong>
+            </li>
+
+
+            <li>
+                Latitude:
+                <strong>
+                ${telemetry.position.lat}
+                </strong>
+            </li>
+
+
+            <li>
+                Longitude:
+                <strong>
+                ${telemetry.position.lon}
+                </strong>
+            </li>
+
+
+            <li>
+                🛰 GPS:
+                <strong>
+                ${
+                telemetry.position.gps_valid 
+                ? "Online" 
+                : "Offline"
+                }
+                </strong>
+            </li>
+
+
+            <li>
+                🏁 Lap Count:
+                <strong>
+                ${telemetry.race.lap_count}
+                </strong>
+            </li>
+
+
+            <li>
+                ⏱ Data Age:
+                <strong>
+                ${telemetry.position.age_ms} ms
+                </strong>
+            </li>
+
+        `;
+
+
+    } catch(error) {
+
+
+        telemetryList.innerHTML = `
+
+            <li>
+                ⚠️ Telemetry connection failed
+            </li>
+
+        `;
+
+
+        console.error(error);
+
+    }
+
+}
+
+
+
+refreshButton.addEventListener(
+    "click",
+    loadTelemetry
+);
+
+
+
+loadTelemetry();
+
+
+
+setInterval(
+    loadTelemetry,
+    5000
+);
+
+
+</script>
 </section>
   
 </main>
