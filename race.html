@@ -186,11 +186,6 @@
 </section>
 
 <section class="card">
-<h2>Why We Race</h2>
-<p>Racing pushes our team beyond the classroom, challenging our engineering, teamwork, and problem-solving in real-world conditions.</p>
-</section>
-
-<section class="card">
     <h2>Live Race Telemetry</h2>
 
     <details open>
@@ -201,99 +196,184 @@
             engineering data from the vehicle. Team members can monitor speed,
             battery state of charge (SOC), power consumption, temperatures,
             GPS location, and other critical systems in real time.
-      <script>
-const telemetryURL = "https://cagedmotion.com/ingest-api/run_wsgi.py/api/telemetry/latest";
+        </p>
+
+        <div class="telemetry-dashboard">
+
+            <h3>Vehicle Information</h3>
+
+            <dl id="telemetryMeta">
+                <dt>Status</dt>
+                <dd>Loading telemetry...</dd>
+            </dl>
+
+
+            <h3>Live Data</h3>
+
+            <ul id="telemetryList">
+                <li>Waiting for telemetry...</li>
+            </ul>
+
+
+            <button id="telemetryRefresh">
+                Refresh Telemetry
+            </button>
+
+        </div>
+
+    </details>
+</section>
+
+
+<script>
+
+const telemetryURL = 
+"https://cagedmotion.com/ingest-api/run_wsgi.py/api/telemetry/latest";
+
 
 const telemetryMeta = document.getElementById("telemetryMeta");
 const telemetryList = document.getElementById("telemetryList");
 const refreshButton = document.getElementById("telemetryRefresh");
 
+
 async function loadTelemetry() {
+
     try {
+
         const response = await fetch(telemetryURL);
+
 
         if (!response.ok) {
             throw new Error("Telemetry unavailable");
         }
 
+
         const data = await response.json();
+
         const telemetry = data.latest;
 
 
+
         telemetryMeta.innerHTML = `
+
             <dt>Driver</dt>
-            <dd>${telemetry.driver}</dd>
+            <dd>${telemetry.driver ?? "Unknown"}</dd>
 
             <dt>Vehicle</dt>
-            <dd>${telemetry.vehicle_year}</dd>
+            <dd>${telemetry.vehicle_year ?? "Unknown"}</dd>
 
             <dt>Device</dt>
             <dd>${telemetry.device}</dd>
 
             <dt>Last Update</dt>
-            <dd>${new Date(telemetry.received_at).toLocaleString()}</dd>
+            <dd>${new Date(
+                telemetry.received_at
+            ).toLocaleString()}</dd>
+
         `;
+
 
 
         telemetryList.innerHTML = `
-            <li>
-                 Battery State:
-                <strong>${telemetry.battery.soc_pct.toFixed(1)}%</strong>
-            </li>
 
             <li>
-                 Speed:
-                <strong>${telemetry.speed.vehicle_mph.toFixed(1)} mph</strong>
+                Battery State:
+                <strong>
+                ${telemetry.battery.soc_pct.toFixed(1)}%
+                </strong>
             </li>
 
-            <li>
-                 Latitude:
-                <strong>${telemetry.position.lat}</strong>
-            </li>
 
             <li>
-                 Longitude:
-                <strong>${telemetry.position.lon}</strong>
+                Speed:
+                <strong>
+                ${telemetry.speed.vehicle_mph.toFixed(1)} mph
+                </strong>
             </li>
 
-            <li>
-                 GPS Status:
-                <strong>${telemetry.position.gps_valid ? "Online" : "Offline"}</strong>
-            </li>
 
             <li>
-                 Lap Count:
-                <strong>${telemetry.race.lap_count}</strong>
+                Latitude:
+                <strong>
+                ${telemetry.position.lat}
+                </strong>
             </li>
 
+
             <li>
-                 Data Age:
-                <strong>${telemetry.position.age_ms} ms</strong>
+                Longitude:
+                <strong>
+                ${telemetry.position.lon}
+                </strong>
             </li>
+
+
+            <li>
+                🛰 GPS:
+                <strong>
+                ${
+                telemetry.position.gps_valid 
+                ? "Online" 
+                : "Offline"
+                }
+                </strong>
+            </li>
+
+
+            <li>
+                🏁 Lap Count:
+                <strong>
+                ${telemetry.race.lap_count}
+                </strong>
+            </li>
+
+
+            <li>
+                ⏱ Data Age:
+                <strong>
+                ${telemetry.position.age_ms} ms
+                </strong>
+            </li>
+
         `;
+
 
     } catch(error) {
 
+
         telemetryList.innerHTML = `
+
             <li>
                 ⚠️ Telemetry connection failed
             </li>
+
         `;
 
+
         console.error(error);
+
     }
+
 }
 
 
-refreshButton.addEventListener("click", loadTelemetry);
+
+refreshButton.addEventListener(
+    "click",
+    loadTelemetry
+);
 
 
-// Initial load
+
 loadTelemetry();
 
 
-// Update every 5 seconds
-setInterval(loadTelemetry, 5000);
+
+setInterval(
+    loadTelemetry,
+    5000
+);
+
 
 </script>
 </section>
