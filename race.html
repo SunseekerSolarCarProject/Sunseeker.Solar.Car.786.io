@@ -117,54 +117,50 @@
     <h2>Live Solar Car Tracking</h2>
 
     <details open>
-
-        <summary>
-            <strong>Vehicle Location</strong>
-        </summary>
-
+        <summary><strong>Real-Time Vehicle Tracker</strong></summary>
 
         <p>
-            Follow Sunseeker's location during the American Solar Challenge.
-            GPS data from the vehicle telemetry system updates the map in real time.
+            Follow the WMU Sunseeker solar vehicle during testing and competition.
+            Live telemetry data provides vehicle location, speed, battery status,
+            and race information directly from the car.
         </p>
 
 
-        <p id="mapStatus">
-            Connecting to vehicle GPS...
-        </p>
+        <div class="tracking-dashboard">
+
+            <div class="tracking-info">
+
+                <h3>Vehicle Status</h3>
+
+                <p id="telemetryStatus">
+                    Connecting to solar car...
+                </p>
 
 
-        <div class="map-status">
-
-            <p>
-                <strong>Status:</strong>
-                <span id="car-status">Connecting...</span>
-            </p>
-
-            <p>
-                <strong>Latitude:</strong>
-                <span id="latitude">--</span>
-            </p>
-
-            <p>
-                <strong>Longitude:</strong>
-                <span id="longitude">--</span>
-            </p>
-
-            <p>
-                <strong>Last Update:</strong>
-                <span id="timestamp">--</span>
-            </p>
-
-        </div>
+                <dl id="telemetryMeta" class="telemetry-meta">
+                </dl>
 
 
-        <div class="telemetry-map">
+                <ul id="telemetryList" class="telemetry-list">
+                </ul>
 
-            <div id="live-map"></div>
 
-        </div>
+                <button id="telemetryRefresh">
+                    Refresh Location
+                </button>
 
+            </div>
+
+
+            <div class="tracking-map">
+
+                <iframe
+                    id="solarMap"
+                    src="https://www.google.com/maps?q=42.300404,-85.600000&output=embed"
+                    loading="lazy">
+                </iframe>
+
+            </div>
 
     </details>
 
