@@ -223,22 +223,28 @@ const telemetryURL =
 "https://cagedmotion.com/ingest-api/run_wsgi.py/api/telemetry/latest";
 
 
-const telemetryMeta = document.getElementById("telemetryMeta");
-const telemetryList = document.getElementById("telemetryList");
-const refreshButton = document.getElementById("telemetryRefresh");
+const trackingMeta = document.getElementById("trackingMeta");
+const trackingList = document.getElementById("trackingList");
+const trackingRefresh = document.getElementById("trackingRefresh");
+
+const raceMeta = document.getElementById("raceMeta");
+const raceList = document.getElementById("raceList");
+const raceRefresh = document.getElementById("raceRefresh");
+
 const solarMap = document.getElementById("solarMap");
+
 
 
 async function loadTelemetry() {
 
     try {
 
-        const response = await fetch(telemetryURL, {
-            cache: "no-store"
+        const response = await fetch(telemetryURL,{
+            cache:"no-store"
         });
 
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error("Telemetry unavailable");
         }
 
@@ -248,74 +254,172 @@ async function loadTelemetry() {
         const telemetry = data.latest;
 
 
-        telemetryMeta.innerHTML = `
 
-            <dt>Status</dt>
-            <dd>🟢 Connected</dd>
-
-            <dt>Driver</dt>
-            <dd>${telemetry.driver ?? "Unknown"}</dd>
-
-            <dt>Device</dt>
-            <dd>${telemetry.device ?? "Unknown"}</dd>
-
-            <dt>GPS Fix</dt>
-            <dd>${telemetry.position.fix ?? "Unknown"} satellites</dd>
-
-        `;
+        /*
+        ==========================
+        PUBLIC TRACKING DASHBOARD
+        ==========================
+        */
 
 
+        trackingMeta.innerHTML = `
 
-        telemetryList.innerHTML = `
-
-            <li>
-                🔋 Battery SOC:
-                <strong>
-                ${telemetry.battery.soc_pct.toFixed(1)}%
-                </strong>
-            </li>
+        <dt>Status</dt>
+        <dd>🟢 Vehicle Online</dd>
 
 
-            <li>
-                📍 Latitude:
-                <strong>
-                ${telemetry.position.lat}
-                </strong>
-            </li>
+        <dt>Driver</dt>
+        <dd>
+        ${telemetry.driver ?? "Unknown"}
+        </dd>
 
 
-            <li>
-                📍 Longitude:
-                <strong>
-                ${telemetry.position.lon ?? "N/A"}
-                </strong>
-            </li>
+        <dt>Device</dt>
+        <dd>
+        ${telemetry.device ?? "Unknown"}
+        </dd>
 
 
-            <li>
-                🛰 GPS:
-                <strong>
-                ${
-                telemetry.position.gps_valid
-                ? "Online"
-                : "Offline"
-                }
-                </strong>
-            </li>
-
-
-            <li>
-                ⏱ Data Age:
-                <strong>
-                ${telemetry.position.age_ms} ms
-                </strong>
-            </li>
+        <dt>GPS Fix</dt>
+        <dd>
+        ${telemetry.position.fix ?? "Unknown"}
+        satellites
+        </dd>
 
         `;
 
 
 
-        // Update Google Maps location
+        trackingList.innerHTML = `
+
+
+        <li>
+        🔋 Battery:
+        <strong>
+        ${telemetry.battery.soc_pct.toFixed(1)}%
+        </strong>
+        </li>
+
+
+        <li>
+        GPS:
+        <strong>
+        ${
+        telemetry.position.gps_valid
+        ? "Online"
+        : "Offline"
+        }
+        </strong>
+        </li>
+
+
+        <li>
+        📍 Latitude:
+        <strong>
+        ${telemetry.position.lat}
+        </strong>
+        </li>
+
+
+        <li>
+        📍 Longitude:
+        <strong>
+        ${telemetry.position.lon ?? "N/A"}
+        </strong>
+        </li>
+
+
+        <li>
+        ⏱ Age:
+        <strong>
+        ${telemetry.position.age_ms} ms
+        </strong>
+        </li>
+
+
+        `;
+
+
+
+        /*
+        ==========================
+        ENGINEERING TELEMETRY
+        ==========================
+        */
+
+
+        raceMeta.innerHTML = `
+
+
+        <dt>Status</dt>
+        <dd>
+        Connected
+        </dd>
+
+
+        <dt>Driver</dt>
+        <dd>
+        ${telemetry.driver ?? "Unknown"}
+        </dd>
+
+
+        <dt>Device</dt>
+        <dd>
+        ${telemetry.device ?? "Unknown"}
+        </dd>
+
+
+        `;
+
+
+
+        raceList.innerHTML = `
+
+
+        <li>
+        Battery SOC:
+        <strong>
+        ${telemetry.battery.soc_pct.toFixed(2)} %
+        </strong>
+        </li>
+
+
+        <li>
+        GPS Fix:
+        <strong>
+        ${telemetry.position.fix}
+        </strong>
+        </li>
+
+
+        <li>
+        GPS Valid:
+        <strong>
+        ${
+        telemetry.position.gps_valid
+        ? "YES"
+        : "NO"
+        }
+        </strong>
+        </li>
+
+
+        <li>
+        Data Age:
+        <strong>
+        ${telemetry.position.age_ms} ms
+        </strong>
+        </li>
+
+
+        `;
+
+
+
+        /*
+        UPDATE MAP
+        */
+
 
         if(
             telemetry.position.lat &&
@@ -329,23 +433,29 @@ async function loadTelemetry() {
 
 
 
-    } catch(error){
+    }
 
 
-        telemetryMeta.innerHTML = `
+
+    catch(error){
+
+
+        console.error(error);
+
+
+        trackingMeta.innerHTML=
+        `
         <dt>Status</dt>
         <dd>🔴 Offline</dd>
         `;
 
 
-        telemetryList.innerHTML = `
-        <li>
-        ⚠️ Unable to connect to vehicle telemetry
-        </li>
+        raceMeta.innerHTML=
+        `
+        <dt>Status</dt>
+        <dd>🔴 Offline</dd>
         `;
 
-
-        console.error(error);
 
     }
 
@@ -353,7 +463,9 @@ async function loadTelemetry() {
 
 
 
-refreshButton.onclick = loadTelemetry;
+trackingRefresh.onclick = loadTelemetry;
+
+raceRefresh.onclick = loadTelemetry;
 
 
 loadTelemetry();
@@ -375,10 +487,8 @@ setInterval(
 </footer>
 
 <script src="js/telemetry-test.js"></script>
+
 </body>
 </html>
-  © 2026 WMU Sunseeker • Western Michigan University
-</footer>
-
 </body>
 </html>
