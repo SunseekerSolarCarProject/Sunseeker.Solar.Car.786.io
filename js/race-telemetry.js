@@ -10,7 +10,7 @@
 
 // API, polling, and history-response settings.
 const TELEMETRY_API = "https://cagedmotion.com/ingest-api/run_wsgi.py/api/telemetry";
-const HISTORY_LIVE_LIMIT = 5000;
+const HISTORY_LIVE_LIMIT = 10000;
 // The final ASC request asks for 10,000, the API caps it at 10,000.
 const HISTORY_FINAL_LIMIT = 10000;
 const LIVE_REFRESH_MS = 30000;
@@ -178,7 +178,7 @@ function formatRaceTimeForViewer(dateValue, minutes) {
 
 // Format a daily schedule once in Central Time and once in the viewer's local zone.
 function formatRaceRangeForViewer(dateValue, startMinutes, endMinutes) {
-  const centralRange = `${formatScheduleTime(startMinutes)}â€“${formatScheduleTime(endMinutes)} Central Time`;
+  const centralRange = `${formatScheduleTime(startMinutes)}–${formatScheduleTime(endMinutes)} Central Time`;
   const viewerTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   if (!viewerTimeZone || viewerTimeZone === RACE_TIME_ZONE) return centralRange;
@@ -190,7 +190,7 @@ function formatRaceRangeForViewer(dateValue, startMinutes, endMinutes) {
   });
   const localStart = localFormatter.format(dateAtRaceTime(dateValue, startMinutes));
   const localEnd = localFormatter.format(dateAtRaceTime(dateValue, endMinutes));
-  return `${centralRange} (${localStart}â€“${localEnd} for you)`;
+  return `${centralRange} (${localStart}–${localEnd} for you)`;
 }
 
 // Centralized event switch. Update these date constants to change what the UI shows.
@@ -344,7 +344,7 @@ function updateLiveMarker(telemetry) {
   if (!routeLayer.getLayers().length) map.setView(point, 13);
 }
 
-// Render common live fields, plus FSGP-only lap fields during July 21â€“23.
+// Render common live fields, plus FSGP-only lap fields during July 21–23.
 function renderLatest(telemetry) {
   const timestamp = recordDate(telemetry);
   const age = timestamp ? Math.max(0, Date.now() - timestamp.getTime()) : Infinity;
@@ -390,9 +390,9 @@ function renderLatest(telemetry) {
   const window = raceWindow();
 
   if (window.phase === "charging") {
-    setStatus(elements.liveStatus, "Todayâ€™s scheduled driving window is complete. Live telemetry updates are paused.", "stale");
+    setStatus(elements.liveStatus, "Today’s scheduled driving window is complete. Live telemetry updates are paused.", "stale");
   } else if (window.phase === "before") {
-    setStatus(elements.liveStatus, `Todayâ€™s live telemetry begins at ${formatScheduleTime(window.startMinutes)} Central.`, "loading");
+    setStatus(elements.liveStatus, `Today’s live telemetry begins at ${formatScheduleTime(window.startMinutes)} Central.`, "loading");
   } else if (!fresh) {
     setStatus(elements.liveStatus, "Telemetry connected, but the latest vehicle update is stale.", "stale");
   } else if (!gpsValid) {
@@ -416,7 +416,7 @@ function renderLatest(telemetry) {
 async function loadLatest() {
   lastLiveRequestAt = Date.now();
   elements.liveRefresh.disabled = true;
-  setStatus(elements.liveStatus, "Loading the latest vehicle telemetryâ€¦", "loading");
+  setStatus(elements.liveStatus, "Loading the latest vehicle telemetry…", "loading");
 
   try {
     const data = await fetchJson(`${TELEMETRY_API}/latest`);
@@ -426,7 +426,7 @@ async function loadLatest() {
     console.error(error);
     const window = raceWindow();
     if (window.phase === "charging") {
-      setStatus(elements.liveStatus, "Live updates are paused for charging. Todayâ€™s completed driving progress and route remain displayed.", "stale");
+      setStatus(elements.liveStatus, "Live updates are paused for charging. Today’s completed driving progress and route remain displayed.", "stale");
     } else {
       setStatus(elements.liveStatus, "Live telemetry is unavailable. Please try again shortly.", "offline");
     }
@@ -545,7 +545,7 @@ async function loadHistory(event, limit = HISTORY_LIVE_LIMIT) {
   let succeeded = false;
   elements.historySubmit.disabled = true;
   elements.historyMeta.replaceChildren();
-  setStatus(elements.historyStatus, "Loading travel historyâ€¦", "loading");
+  setStatus(elements.historyStatus, "Loading travel history…", "loading");
 
   try {
     const data = await fetchJson(historyUrl(limit));
@@ -605,7 +605,7 @@ function updateRouteMileage(validPoints, data, requestedLimit, truncated) {
   }
 }
 
-// The ASC progress bar represents elapsed time in the 9 AMâ€“6 PM driving window.
+// The ASC progress bar represents elapsed time in the 9 AM–6 PM driving window.
 function updateDayProgress() {
   const window = raceWindow();
   const event = currentEvent();
@@ -618,13 +618,13 @@ function updateDayProgress() {
       : "ASC driving-day progress";
 
     if (window.phase === "before") {
-      label = `Todayâ€™s ${event.name} telemetry begins at ${formatRaceTimeForViewer(window.date, window.startMinutes)}`;
+      label = `Today’s ${event.name} telemetry begins at ${formatRaceTimeForViewer(window.date, window.startMinutes)}`;
     } else if (window.phase === "driving") {
       percent = ((window.minutes - window.startMinutes) / (window.endMinutes - window.startMinutes)) * 100;
-      label = `${Math.floor(percent)}% of todayâ€™s ${formatRaceRangeForViewer(window.date, window.startMinutes, window.endMinutes)} window complete`;
+      label = `${Math.floor(percent)}% of today’s ${formatRaceRangeForViewer(window.date, window.startMinutes, window.endMinutes)} window complete`;
     } else {
       percent = 100;
-      label = `Todayâ€™s ${event.name} driving window is complete`;
+      label = `Today’s ${event.name} driving window is complete`;
     }
   } else if (window.date < FSGP_FIRST_DAY) {
     elements.dayProgressLabel.textContent = "Upcoming race-day progress";
@@ -663,7 +663,7 @@ function updateTrackingPresentation() {
     elements.trackerDescription.textContent = "Follow live vehicle data, lap counts, and lap times during the Formula Sun Grand Prix.";
   } else if (event.type === "asc") {
     elements.trackerHeading.textContent = "ASC Live Route Tracking";
-    elements.trackerDescription.textContent = "Follow live vehicle data, todayâ€™s route mileage, and driving-day progress.";
+    elements.trackerDescription.textContent = "Follow live vehicle data, today’s route mileage, and driving-day progress.";
   } else {
     elements.trackerHeading.textContent = "Live Solar Car Tracking";
     elements.trackerDescription.textContent = "View the latest vehicle status and GPS route progress.";
@@ -673,8 +673,8 @@ function updateTrackingPresentation() {
     setStatus(elements.liveStatus, `Live updates will begin at ${formatRaceTimeForViewer(window.date, window.startMinutes)}.`, "loading");
   } else if (window.phase === "charging") {
     const message = window.isAscDay
-      ? "Live updates are paused for charging. Todayâ€™s completed progress, mileage, and route remain displayed."
-      : "Todayâ€™s FSGP track window is complete. Live telemetry updates are paused.";
+      ? "Live updates are paused for charging. Today’s completed progress, mileage, and route remain displayed."
+      : "Today’s FSGP track window is complete. Live telemetry updates are paused.";
     setStatus(elements.liveStatus, message, "stale");
   }
 }
