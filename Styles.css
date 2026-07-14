@@ -612,10 +612,6 @@ footer {
     align-items: flex-start;
     flex-direction: column;
   }
-
-  .telemetry-map {
-    height: 320px;
-  }
   .telemetry-test details {
     width: 100%;
 }
@@ -644,6 +640,9 @@ footer {
 .telemetry-test details > *:not(summary) {
     margin-top: 15px;
 }
+
+}
+
 /* ==========================================
    RESPONSIVE DESIGN
 ========================================== */
@@ -831,6 +830,8 @@ footer {
         font-size:.85rem;
     }
 
+}
+
     .sponsor-grid a {
   display: inline-block;
   transition: transform 0.3s ease;
@@ -926,4 +927,304 @@ footer {
 }
 
 }
+
+/* ==========================================
+   Race Page & Route Tracker
+========================================== */
+.race-page {
+  max-width: 1200px;
+}
+
+.race-page .card > h2:first-child,
+.race-page details > summary {
+  margin-top: 0;
+}
+
+.race-page details + details {
+  border-top: 1px solid #ddd;
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.race-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.race-card {
+  background: var(--wmu-light);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.race-card h3 {
+  color: var(--wmu-brown);
+  margin-top: 0;
+}
+
+.countdown {
+  background: #fff7d6;
+  border-left: 5px solid var(--wmu-gold);
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+}
+
+.tracker-heading {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.tracker-heading h2 {
+  margin: 0 0 0.35rem;
+}
+
+.tracker-heading p {
+  margin: 0;
+}
+
+.race-tracker button {
+  background: var(--wmu-brown);
+  border: 0;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+}
+
+.race-tracker button:hover {
+  background: #36211e;
+}
+
+.race-tracker button:focus-visible,
+.race-tracker input:focus-visible,
+.race-tracker select:focus-visible {
+  outline: 3px solid var(--wmu-gold);
+  outline-offset: 2px;
+}
+
+.race-tracker button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.tracker-status,
+.history-status {
+  border-left: 5px solid #777;
+  border-radius: 4px;
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+}
+
+.is-loading {
+  background: #f1f3f5;
+}
+
+.is-online,
+.is-success {
+  background: #e8f7ed;
+  border-left-color: #16803c;
+}
+
+.is-warning,
+.is-stale {
+  background: #fff7d6;
+  border-left-color: #b77900;
+}
+
+.is-offline,
+.is-error {
+  background: #fdecea;
+  border-left-color: #b42318;
+}
+
+.day-progress {
+  margin: 1rem 0 1.25rem;
+}
+
+.day-progress-label {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.day-progress-label strong {
+  color: var(--wmu-brown);
+}
+
+.day-progress-label span {
+  color: #555;
+  text-align: right;
+}
+
+.day-progress-track {
+  appearance: none;
+  background: #e1e4e8;
+  border: 0;
+  border-radius: 999px;
+  display: block;
+  height: 18px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.day-progress-track::-webkit-progress-bar {
+  background: #e1e4e8;
+  border-radius: 999px;
+}
+
+.day-progress-track::-webkit-progress-value {
+  background: linear-gradient(90deg, var(--wmu-gold-dark), var(--wmu-gold));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.day-progress-track::-moz-progress-bar {
+  background: linear-gradient(90deg, var(--wmu-gold-dark), var(--wmu-gold));
+  border-radius: 999px;
+}
+
+.mileage-card {
+  background: var(--wmu-light);
+  border-left: 5px solid var(--wmu-gold);
+  border-radius: 6px;
+  margin: 1rem 0 1.25rem;
+  padding: 1rem;
+}
+
+.mileage-card span,
+.mileage-card small {
+  color: #555;
+  display: block;
+}
+
+.mileage-card span {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.mileage-card strong {
+  color: var(--wmu-brown);
+  display: block;
+  font-size: 1.6rem;
+  margin: 0.3rem 0;
+}
+
+.tracker-summary,
+.route-summary {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  margin: 1rem 0;
+}
+
+.tracker-summary > div,
+.route-summary > div {
+  background: var(--wmu-light);
+  border-left: 4px solid var(--wmu-gold);
+  border-radius: 4px;
+  padding: 0.8rem;
+}
+
+.tracker-summary dt,
+.route-summary dt {
+  color: #555;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.tracker-summary dd,
+.route-summary dd {
+  font-weight: 650;
+  margin: 0.3rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.route-map {
+  background: #e5e5e5;
+  border-radius: 12px;
+  height: 520px;
+  margin-top: 1rem;
+  width: 100%;
+  z-index: 0;
+}
+
+.map-attribution-note {
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.history-panel {
+  margin-top: 1.5rem;
+}
+
+.history-form,
+.history-field-group {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.history-field-group[hidden] {
+  display: none;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.form-field label {
+  color: var(--wmu-brown);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.form-field input,
+.form-field select,
+.history-form select {
+  background: white;
+  border: 1px solid #999;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font: inherit;
+  min-height: 44px;
+  padding: 0.55rem 0.65rem;
+}
+
+@media (max-width: 768px) {
+  .tracker-heading,
+  .day-progress-label,
+  .history-form,
+  .history-field-group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .day-progress-label span {
+    text-align: left;
+  }
+
+  .route-map {
+    height: 380px;
+  }
+
+  .race-tracker button,
+  .form-field input,
+  .form-field select,
+  .history-form select {
+    width: 100%;
+  }
 }
