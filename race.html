@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Team | WMU Sunseeker</title>
-  <link rel="stylesheet" href="Styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Races &amp; Live Tracking | WMU Sunseeker</title>
+  <link rel="stylesheet" href="Styles.css">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin
+  >
 </head>
 <body>
-<body>
 
-<nav class="navbar">
+<nav class="navbar" aria-label="Main navigation">
   <div class="nav-inner">
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="team.html">Team</a>
-      <a href="race.html">Races</a>
+      <a href="race.html" aria-current="page">Races</a>
       <a href="gallery.html">Gallery</a>
       <a href="sponsors.html">Sponsors</a>
       <a href="calendar.html">Calendar</a>
-      <a href="https://sunseekersolarcar-shop.fourthwall.com/" target="_blank">Store</a>
+      <a href="https://sunseekersolarcar-shop.fourthwall.com/" target="_blank" rel="noopener noreferrer">Store</a>
     </div>
 
     <div class="nav-logo">
@@ -27,468 +33,190 @@
   </div>
 </nav>
 
-
 <header class="hero small-hero">
-  <h1>Races & Competitions</h1>
-  <p>Follow the WMU Sunseeker team as we test, compete, and innovate.</p>
+  <h1>Races &amp; Competitions</h1>
+  <p>Follow WMU Sunseeker as we test, compete, and innovate.</p>
 </header>
 
-<main>
+<main class="container race-page">
+  <section class="card">
+    <h2>Upcoming Race</h2>
+    <div class="race-grid">
+      <article class="race-card">
+        <h3>Electrek FSGP &amp; American Solar Challenge 2026</h3>
+        <p><strong>Date:</strong> July 21–August 1, 2026</p>
+        <p><strong>Location:</strong> Brainerd, Minnesota to Amarillo, Texas</p>
+        <p>A multi-day collegiate solar vehicle competition testing efficiency, reliability, and endurance.</p>
+      </article>
+    </div>
+  </section>
 
-<section class="card">
-<h2>Upcoming Races</h2>
-<div class="race-grid">
-<div class="race-card">
-<h3>American Solar Challenge</h3>
-<p><strong>Electrek FSGP & ASC 2026</strong>
-<p><strong>Date:</strong>July 21st - August 1st</p>
-<p><strong>Location:</strong> United States</p>
-<p>A multi-day collegiate solar vehicle race testing efficiency, reliability, and endurance across long-distance routes.</p>
-</div>
-</div>
-</section>
-
-<section class="card">
-<h2>Race Details</h2>
-<details open>
-<summary><strong>American Solar Challenge 2026</strong></summary>
-<p><strong>Electrek FSGP 2026</strong>
-<p><strong>Date:</strong> July 21st - July 23rd</p>
-<p><strong>Location:</strong> 5523 Birchdale Rd, Brainerd, MN 56401</p>
- <div class="countdown" data-date="2026-07-01"></div>
-
-        <div class="map-embed">
-            <iframe 
-                src="https://www.google.com/maps?q=5523+Birchdale+Rd,+Brainerd,+MN+56401&output=embed"
-                loading="lazy"
-                allowfullscreen="">
-            </iframe>
-        </div>
-
-<h4>Results & Stats</h4>
-<ul class="race-stats">
-<li>Placement: TBD</li>
-<li>Total Distance: ~1,500 miles</li>
-<li>Average Speed: TBD</li>
-<li>Energy Efficiency: TBD</li>
-</ul>
-
-<div class="gallery-grid">
-<img src="images/gallery/build/L&R-Under.MR.jpg" alt="FSGP Photo 1">
-<img src="images/gallery/competition/53013300715_130ec01292_o.jpg" alt="FSGP Photo 2">
-<img src="images/gallery/competition/FSGP25148.jpg" alt="FSGP Photo 3">
-</div>
-</details>
-</section>
-
-<section class="card">
-<h2>Race Details</h2>
-<details open>
-<summary><strong>American Solar Challenge 2026</strong></summary>
-<p><strong>Electrek ASC 2026</strong>
-<p><strong>Date:</strong> July 25th - August 1st</p>
-<p><strong>Location:</strong> Minneapolis to Amarillo </p>
-<div class="countdown" data-date="2026-07-01"></div>
-<div class="map-embed">
-  <iframe 
-    src="https://www.google.com/maps/d/u/0/embed?mid=1eNrt3howQ8uiD7XoSEpDEowby6nvk-8&ehbc=2E312F&noprof=1&ll=40.255110406939316%2C-95.43950099999998&z=6"
-    loading="lazy"
-    allowfullscreen>
-  </iframe>
-</div>
-
-<h4>Results & Stats</h4>
-<ul class="race-stats">
-<li>Placement: TBD</li>
-<li>Total Distance: ~1,500 miles</li>
-<li>Average Speed: TBD</li>
-<li>Next Stage Stop: TBD</li>
-</ul>
-
-<div class="gallery-grid">
-<img src="images/races/" alt="ASC Photo 1">
-<img src="images/races/asc2026/2.jpg" alt="ASC Photo 2">
-<img src="images/races/asc2026/3.jpg" alt="ASC Photo 3">
-</div>
-</details>
-</section>
-  
-<section class="card">
-    <h2>Live Solar Car Tracking</h2>
+  <section class="card">
+    <h2>Race Details</h2>
 
     <details open>
-        <summary><strong>Real-Time Vehicle Tracker</strong></summary>
+      <summary><strong>Electrek Formula Sun Grand Prix 2026</strong></summary>
+      <p><strong>Date:</strong> July 21–23, 2026</p>
+      <p><strong>Location:</strong> 5523 Birchdale Road, Brainerd, MN 56401</p>
+      <p class="countdown" data-date="2026-07-21T00:00:00-05:00" aria-live="polite"></p>
 
-        <p>
-            Follow the WMU Sunseeker solar vehicle during testing and competition.
-            Live telemetry data provides vehicle location, speed, battery status,
-            and race information directly from the car.
-        </p>
+      <div class="map-embed">
+        <iframe
+          title="Brainerd International Raceway map"
+          src="https://www.google.com/maps?q=5523+Birchdale+Rd,+Brainerd,+MN+56401&amp;output=embed"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+      </div>
 
+      <h3>Results &amp; Stats</h3>
+      <ul class="race-stats">
+        <li>Placement: TBD</li>
+        <li>Total distance: TBD</li>
+        <li>Average speed: TBD</li>
+        <li>Energy efficiency: TBD</li>
+      </ul>
 
-        <div class="tracking-dashboard">
-
-            <div class="tracking-info">
-
-                <h3>Vehicle Status</h3>
-
-                <p id="telemetryStatus">
-                    Connecting to solar car...
-                </p>
-
-
-                <dl id="trackingMeta" class="telemetry-meta"></dl>
-
-                <ul id="trackingList" class="telemetry-list"></ul>
-
-                <button id="trackingRefresh">
-                  Refresh Location
-                </button>
-
-            </div>
-
-
-            <div class="tracking-map">
-
-                <iframe
-                    id="solarMap"
-                    src="https://www.google.com/maps?q=42.300404,-85.600000&output=embed"
-                    loading="lazy">
-                </iframe>
-
-            </div>
-
+      <div class="gallery-grid">
+        <img src="images/gallery/build/L&R-Under.MR.jpg" alt="FSGP Photo 1">
+        <img src="images/gallery/competition/53013300715_130ec01292_o.jpg" alt="FSGP Photo 2">
+        <img src="images/gallery/competition/FSGP25148.jpg" alt="FSGP Photo 3">
+      </div>
     </details>
 
-</section>
-<section class="card">
-<h2>Past Races</h2>
-<div class="race-grid">
-<div class="race-card">
-<h3>ASC Qualifier</h3>
-<p><strong>Year:</strong> </p>
-<p></p>
-</div>
-<div class="race-card">
-<h3>Regional Solar Showcase</h3>
-<p><strong>Year:</strong> </p>
-<p></p>
-</div>
-</div>
-</section>
+    <details open>
+      <summary><strong>Electrek American Solar Challenge 2026</strong></summary>
+      <p><strong>Date:</strong> July 25–August 1, 2026</p>
+      <p id="ascSchedule"><strong>Daily driving window:</strong> 9:00 AM–6:00 PM Central Time</p>
+      <p><strong>Route:</strong> Minneapolis, Minnesota to Amarillo, Texas</p>
+      <p class="countdown" data-date="2026-07-25T00:00:00-05:00" aria-live="polite"></p>
 
-<section class="card">
-    <h2>Live Race Telemetry</h2>
+      <div class="map-embed">
+        <iframe
+          title="American Solar Challenge route map"
+          src="https://www.google.com/maps/d/u/0/embed?mid=1eNrt3howQ8uiD7XoSEpDEowby6nvk-8&amp;ehbc=2E312F&amp;noprof=1&amp;ll=40.255110406939316%2C-95.43950099999998&amp;z=6"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+      </div>
 
-    <details>
-        <summary><strong>Telemetry Dashboard</strong></summary>
+      <h3>Results &amp; Stats</h3>
+      <ul class="race-stats">
+        <li>Placement: TBD</li>
+        <li>Total distance: approximately 1,500 miles</li>
+        <li>Average speed: TBD</li>
+        <li>Next stage stop: TBD</li>
+      </ul>
 
-        <p>
-            During testing and competition, our telemetry system streams live
-            engineering data from the vehicle. Team members can monitor speed,
-            battery state of charge (SOC), power consumption, temperatures,
-            GPS location, and other critical systems in real time.
-        </p>
+      <div class="gallery-grid">
+        <img src="images/races/" alt="ASC Photo 1">
+        <img src="images/races/asc2026/2.jpg" alt="ASC Photo 2">
+        <img src="images/races/asc2026/3.jpg" alt="ASC Photo 3">
+      </div>
+    </details>
+  </section>
 
-        <div class="telemetry-dashboard">
+  <section class="card race-tracker" aria-labelledby="trackerHeading">
+    <div class="tracker-heading">
+      <div>
+        <h2 id="trackerHeading">Live Solar Car Tracking</h2>
+        <p id="trackerDescription">View the latest vehicle status and GPS route progress.</p>
+      </div>
+      <button id="trackingRefresh" type="button">Refresh live data</button>
+    </div>
 
-            <h3>Vehicle Information</h3>
+    <p id="telemetryStatus" class="tracker-status is-loading" role="status" aria-live="polite">
+      Connecting to the solar car…
+    </p>
 
-            <dl id="raceMeta">
-                <dt>Status</dt>
-                <dd>Loading telemetry...</dd>
-            </dl>
+    <div id="dayProgressPanel" class="day-progress" role="group" aria-labelledby="dayProgressLabel">
+      <div class="day-progress-label">
+        <strong id="dayProgressLabel">ASC driving-day progress</strong>
+        <span id="dayProgressValue">Scheduled daily from 9:00 AM–6:00 PM Central</span>
+      </div>
+      <progress
+        id="dayProgressTrack"
+        class="day-progress-track"
+        max="100"
+        value="0"
+        aria-labelledby="dayProgressLabel">0%</progress>
+    </div>
 
+    <div id="mileagePanel" class="mileage-card" hidden>
+      <span>Route mileage today</span>
+      <strong id="routeMileage">Waiting for valid GPS points</strong>
+      <small id="routeMileageNote">Calculated from the GPS route returned by telemetry history.</small>
+    </div>
 
-            <h3>Live Data</h3>
+    <div id="trackingMeta" class="tracker-summary" role="group" aria-label="Latest vehicle telemetry"></div>
 
-            <ul id="raceList">
-                <li>Waiting for telemetry...</li>
-            </ul>
+    <section id="solarMap" class="route-map" aria-label="Solar car live location and travel route"></section>
+    <p class="map-attribution-note">Route points are shown only when the telemetry contains a valid GPS fix.</p>
 
-
-            <button id="raceRefresh">
-                Refresh Telemetry
-            </button>
-
+    <details id="historyPanel" class="history-panel" hidden>
+      <summary><strong>Travel History</strong></summary>
+      <form id="historyForm" class="history-form">
+        <div class="form-field">
+          <label for="historyMode">History window</label>
+          <select id="historyMode" name="mode">
+            <option value="day">Specific travel day</option>
+            <option value="hours">Recent hours</option>
+          </select>
         </div>
 
+        <div id="dayFields" class="history-field-group">
+          <div class="form-field">
+            <label for="historyDate">Travel date</label>
+            <input id="historyDate" name="date" type="date" required>
+          </div>
+          <div class="form-field">
+            <label for="historyStart">Start time</label>
+            <input id="historyStart" name="start" type="time" value="09:00">
+          </div>
+          <div class="form-field">
+            <label for="historyEnd">End time</label>
+            <input id="historyEnd" name="end" type="time" value="18:00">
+          </div>
+        </div>
+
+        <div id="hourFields" class="history-field-group" hidden>
+          <div class="form-field">
+            <label for="historyHours">Previous hours</label>
+            <input id="historyHours" name="hour" type="number" min="1" max="24" step="1" value="24">
+          </div>
+        </div>
+
+        <button id="historySubmit" type="submit">Show travel route</button>
+      </form>
+
+      <p id="historyStatus" class="history-status" role="status" aria-live="polite">
+        Choose a date and time range to display the route traveled.
+      </p>
+      <dl id="historyMeta" class="route-summary"></dl>
     </details>
-</section>
-
-
-<script>
-
-const telemetryURL =
-"https://cagedmotion.com/ingest-api/run_wsgi.py/api/telemetry/latest";
-
-
-const trackingMeta = document.getElementById("trackingMeta");
-const trackingList = document.getElementById("trackingList");
-const trackingRefresh = document.getElementById("trackingRefresh");
-
-const raceMeta = document.getElementById("raceMeta");
-const raceList = document.getElementById("raceList");
-const raceRefresh = document.getElementById("raceRefresh");
-
-const solarMap = document.getElementById("solarMap");
-
-
-
-async function loadTelemetry() {
-
-    try {
-
-        const response = await fetch(telemetryURL,{
-            cache:"no-store"
-        });
-
-
-        if(!response.ok){
-            throw new Error("Telemetry unavailable");
-        }
-
-
-        const data = await response.json();
-
-        const telemetry = data.latest;
-
-
-
-        /*
-        ==========================
-        PUBLIC TRACKING DASHBOARD
-        ==========================
-        */
-
-
-        trackingMeta.innerHTML = `
-
-        <dt>Status</dt>
-        <dd>🟢 Vehicle Online</dd>
-
-
-        <dt>Driver</dt>
-        <dd>
-        ${telemetry.driver ?? "Unknown"}
-        </dd>
-
-
-        <dt>Device</dt>
-        <dd>
-        ${telemetry.device ?? "Unknown"}
-        </dd>
-
-
-        <dt>GPS Fix</dt>
-        <dd>
-        ${telemetry.position.fix ?? "Unknown"}
-        satellites
-        </dd>
-
-        `;
-
-
-
-        trackingList.innerHTML = `
-
-
-        <li>
-        🔋 Battery:
-        <strong>
-        ${telemetry.battery.soc_pct.toFixed(1)}%
-        </strong>
-        </li>
-
-
-        <li>
-        GPS:
-        <strong>
-        ${
-        telemetry.position.gps_valid
-        ? "Online"
-        : "Offline"
-        }
-        </strong>
-        </li>
-
-
-        <li>
-        📍 Latitude:
-        <strong>
-        ${telemetry.position.lat}
-        </strong>
-        </li>
-
-
-        <li>
-        📍 Longitude:
-        <strong>
-        ${telemetry.position.lon ?? "N/A"}
-        </strong>
-        </li>
-
-
-        <li>
-        ⏱ Age:
-        <strong>
-        ${telemetry.position.age_ms} ms
-        </strong>
-        </li>
-
-
-        `;
-
-
-
-        /*
-        ==========================
-        ENGINEERING TELEMETRY
-        ==========================
-        */
-
-
-        raceMeta.innerHTML = `
-
-
-        <dt>Status</dt>
-        <dd>
-        Connected
-        </dd>
-
-
-        <dt>Driver</dt>
-        <dd>
-        ${telemetry.driver ?? "Unknown"}
-        </dd>
-
-
-        <dt>Device</dt>
-        <dd>
-        ${telemetry.device ?? "Unknown"}
-        </dd>
-
-
-        `;
-
-
-
-        raceList.innerHTML = `
-
-
-        <li>
-        Battery SOC:
-        <strong>
-        ${telemetry.battery.soc_pct.toFixed(2)} %
-        </strong>
-        </li>
-
-
-        <li>
-        GPS Fix:
-        <strong>
-        ${telemetry.position.fix}
-        </strong>
-        </li>
-
-
-        <li>
-        GPS Valid:
-        <strong>
-        ${
-        telemetry.position.gps_valid
-        ? "YES"
-        : "NO"
-        }
-        </strong>
-        </li>
-
-
-        <li>
-        Data Age:
-        <strong>
-        ${telemetry.position.age_ms} ms
-        </strong>
-        </li>
-
-
-        `;
-
-
-
-        /*
-        UPDATE MAP
-        */
-
-
-        if(
-            telemetry.position.lat &&
-            telemetry.position.lon
-        ){
-
-            solarMap.src =
-            `https://www.google.com/maps?q=${telemetry.position.lat},${telemetry.position.lon}&output=embed`;
-
-        }
-
-
-
-    }
-
-
-
-    catch(error){
-
-
-        console.error(error);
-
-
-        trackingMeta.innerHTML=
-        `
-        <dt>Status</dt>
-        <dd>🔴 Offline</dd>
-        `;
-
-
-        raceMeta.innerHTML=
-        `
-        <dt>Status</dt>
-        <dd>🔴 Offline</dd>
-        `;
-
-
-    }
-
-}
-
-
-
-trackingRefresh.onclick = loadTelemetry;
-
-raceRefresh.onclick = loadTelemetry;
-
-
-loadTelemetry();
-
-
-setInterval(
-    loadTelemetry,
-    5000
-);
-
-
-</script>
-</section>
-  
+  </section>
+
+  <section class="card">
+    <h2>Past Races</h2>
+    <div class="race-grid">
+      <article class="race-card">
+        <h3>ASC Qualifier</h3>
+        <p>Results and photos will be added as the archive is completed.</p>
+      </article>
+      <article class="race-card">
+        <h3>Regional Solar Showcase</h3>
+        <p>Results and photos will be added as the archive is completed.</p>
+      </article>
+    </div>
+  </section>
 </main>
 
-<footer>
-© 2026 WMU Sunseeker • Western Michigan University
-</footer>
+<footer>© 2026 WMU Sunseeker • Western Michigan University</footer>
 
-<script src="js/telemetry-test.js"></script>
-
-</body>
-</html>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin></script>
+<script src="js/race-telemetry.js"></script>
 </body>
 </html>
