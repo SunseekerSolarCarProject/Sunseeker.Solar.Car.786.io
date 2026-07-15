@@ -1134,6 +1134,44 @@ footer {
   padding: 0.8rem;
 }
 
+.tracker-summary > .driver-summary {
+  align-items: center;
+  display: flex;
+  gap: 0.8rem;
+  grid-column: span 2;
+}
+
+.driver-portrait {
+  align-items: center;
+  background: var(--wmu-brown);
+  border: 3px solid var(--wmu-gold);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  flex: 0 0 58px;
+  height: 58px;
+  justify-content: center;
+  overflow: hidden;
+  width: 58px;
+}
+
+.driver-portrait img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.driver-portrait img[hidden],
+.driver-portrait.has-photo .driver-initials {
+  display: none;
+}
+
+.driver-initials {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
 .tracker-summary dt,
 .route-summary dt {
   color: #555;
@@ -1226,5 +1264,9 @@ footer {
   .form-field select,
   .history-form select {
     width: 100%;
+  }
+
+  .tracker-summary > .driver-summary {
+    grid-column: auto;
   }
 }

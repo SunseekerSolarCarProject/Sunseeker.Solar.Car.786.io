@@ -20,6 +20,14 @@ const FSGP_IDLE_SPEED_MPH = 0.5;
 const FSGP_IDLE_AFTER_MS = 10 * 60 * 1000;
 const FSGP_IDLE_CHECK_MS = 5 * 60 * 1000;
 const DEFAULT_MAP_CENTER = [42.2917, -85.5872];
+const DRIVER_PHOTO_DIRECTORY = "images/drivers";
+const DRIVER_PHOTO_EXTENSIONS = ["jpg", "png", "webp", "jpeg"];
+
+// Most photos need no configuration: "Jane Doe" becomes jane-doe.jpg. Add an
+// override only when the database name and desired filename cannot match.
+const DRIVER_PHOTO_OVERRIDES = {
+  // "Jane Doe": "jane-racing.jpg"
+};
 
 // Event dates and ASC driving hours are interpreted in the race's local time.
 const RACE_TIME_ZONE = "America/Chicago";
@@ -78,6 +86,7 @@ let automaticallyLoadedDate = null;
 let automaticallyLoadedPhase = null;
 let fsgpStationarySince = null;
 let lastLiveRequestAt = 0;
+const driverPhotoCache = new Map();
 
 // Return the date and time in Central Time regardless of the visitor's time zone.
 function raceTimeParts(date = new Date()) {
@@ -317,6 +326,86 @@ function addSummaryItem(container, label, value) {
   container.appendChild(item);
 }
 
+// Turn the database name into a predictable, URL-safe photo filename.
+function driverPhotoSlug(name) {
+  return name
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function driverInitials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "?";
+  return `${parts[0][0]}${parts.length > 1 ? parts[parts.length - 1][0] : ""}`.toUpperCase();
+}
+
+function driverPhotoCandidates(name) {
+  const override = DRIVER_PHOTO_OVERRIDES[name];
+  if (override) return [`${DRIVER_PHOTO_DIRECTORY}/${encodeURIComponent(override)}`];
+
+  const slug = driverPhotoSlug(name);
+  return slug
+    ? DRIVER_PHOTO_EXTENSIONS.map((extension) => `${DRIVER_PHOTO_DIRECTORY}/${slug}.${extension}`)
+    : [];
+}
+
+// Render the current driver prominently and fall back to initials until a
+// matching photo is added to images/drivers.
+function addDriverSummaryItem(container, driverValue) {
+  const hasDriver = typeof driverValue === "string" && driverValue.trim() !== "";
+  const driverName = hasDriver ? driverValue.trim() : "Not assigned";
+  const item = document.createElement("div");
+  const portrait = document.createElement("div");
+  const fallback = document.createElement("span");
+  const text = document.createElement("div");
+  const term = document.createElement("dt");
+  const description = document.createElement("dd");
+
+  item.className = "driver-summary";
+  portrait.className = "driver-portrait";
+  fallback.className = "driver-initials";
+  fallback.textContent = hasDriver ? driverInitials(driverName) : "—";
+  fallback.setAttribute("aria-hidden", "true");
+  term.textContent = "Current driver";
+  description.textContent = driverName;
+  text.append(term, description);
+  portrait.appendChild(fallback);
+  item.append(portrait, text);
+  container.appendChild(item);
+
+  if (!hasDriver) return;
+
+  const cachedPhoto = driverPhotoCache.get(driverName);
+  if (cachedPhoto === false) return;
+
+  const candidates = cachedPhoto ? [cachedPhoto] : driverPhotoCandidates(driverName);
+  if (!candidates.length) return;
+
+  const image = document.createElement("img");
+  let candidateIndex = 0;
+  image.alt = "";
+  image.hidden = true;
+  image.addEventListener("load", () => {
+    driverPhotoCache.set(driverName, candidates[candidateIndex]);
+    image.hidden = false;
+    portrait.classList.add("has-photo");
+  });
+  image.addEventListener("error", () => {
+    candidateIndex += 1;
+    if (candidateIndex < candidates.length) {
+      image.src = candidates[candidateIndex];
+      return;
+    }
+    driverPhotoCache.set(driverName, false);
+    image.remove();
+  });
+  portrait.appendChild(image);
+  image.src = candidates[candidateIndex];
+}
+
 // Cache-busting prevents the public tracker from receiving an old proxy response.
 async function fetchJson(url) {
   const separator = url.includes("?") ? "&" : "?";
@@ -365,8 +454,8 @@ function renderLatest(telemetry) {
   }
 
   elements.liveMeta.replaceChildren();
+  addDriverSummaryItem(elements.liveMeta, telemetry.driver);
   addSummaryItem(elements.liveMeta, "Vehicle", formatValue(telemetry.vehicle_year));
-  addSummaryItem(elements.liveMeta, "Driver", formatValue(telemetry.driver, ""));
   addSummaryItem(elements.liveMeta, "Last update", formatTimestamp(telemetry));
   addSummaryItem(elements.liveMeta, "Speed", formatNumber(speed, 1, " mph"));
   addSummaryItem(elements.liveMeta, "Battery", formatNumber(telemetry.battery && telemetry.battery.soc_pct, 1, "%"));
