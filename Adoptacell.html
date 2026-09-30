@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Adopt a Cell | WMU Sunseeker</title>
+
+  <!-- Existing Sunseeker site styles -->
+  <link rel="stylesheet" href="Styles.css">
+
+  <!-- Adopt a Cell page styles -->
+  <link rel="stylesheet" href="Adoptacell.css">
+
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body>
+
+  <!-- =========================================
+       EXISTING SUNSEEKER NAVIGATION
+       ========================================= -->
+
+  <nav class="navbar">
+    <div class="nav-inner">
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="team.html">Team</a>
+        <a href="race.html">Races</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="Adoptacell.html">Adopt a Cell</a>
+        <a href="sponsors.html">Sponsors</a>
+        <a href="calendar.html">Calendar</a>
+
+        <a
+          href="https://sunseekersolarcar-shop.fourthwall.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Store
+        </a>
+      </div>
+
+      <div class="nav-logo">
+        <img
+          src="images/Index/SUN.png"
+          alt="Western Michigan University Logo"
+        >
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- =========================================
+       HERO
+       ========================================= -->
+
+  <section class="adopt-hero">
+
+    <div class="hero-sun"></div>
+
+    <div class="adopt-hero-content">
+
+      <div class="adopt-eyebrow">
+        WESTERN MICHIGAN UNIVERSITY
+      </div>
+
+      <h1>
+        Adopt a <span>Solar Cell.</span>
+      </h1>
+
+      <p class="adopt-intro">
+        Become part of the Sunseeker Solar Car Project and
+        support the students who design, build, test, and
+        race our solar vehicle.
+      </p>
+
+      <div class="adopt-price">
+        <span>$25</span>
+        <small>per cell</small>
+      </div>
+
+      <a href="#cells" class="adopt-hero-button">
+        Choose Your Cell
+        <span>↓</span>
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================
+       STATS
+       ========================================= -->
+
+  <section class="adopt-stats" aria-label="Adoption statistics">
+
+    <div class="adopt-stat">
+      <strong id="availableCount">60</strong>
+      <span>Cells Available</span>
+    </div>
+
+    <div class="adopt-stat">
+      <strong id="adoptedCount">0</strong>
+      <span>Cells Adopted</span>
+    </div>
+
+    <div class="adopt-stat">
+      <strong id="totalCount">60</strong>
+      <span>Total Cells</span>
+    </div>
+
+    <div class="adopt-stat">
+      <strong>$25</strong>
+      <span>Per Cell</span>
+    </div>
+
+  </section>
+
+
+  <!-- =========================================
+       MAIN CONTENT
+       ========================================= -->
+
+  <main>
+
+
+    <!-- =========================================
+         YOUR IMPACT
+         ========================================= -->
+
+    <section class="content-section" id="about">
+
+      <div class="section-heading">
+
+        <span class="section-label">
+          YOUR IMPACT
+        </span>
+
+        <h2>
+          You're supporting the team behind the car.
+        </h2>
+
+        <p>
+          Every solar cell represents a small part of the
+          Sunseeker project. Your support helps our students
+          continue designing, building, testing, and racing
+          solar-powered vehicles.
+        </p>
+
+      </div>
+
+
+      <div class="impact-grid">
+
+        <article class="impact-card">
+
+          <div class="impact-icon">
+            ☀
+          </div>
+
+          <h3>
+            Choose a Cell
+          </h3>
+
+          <p>
+            Pick an available cell from the interactive
+            Sunseeker solar array.
+          </p>
+
+        </article>
+
+
+        <article class="impact-card">
+
+          <div class="impact-icon">
+            ⚡
+          </div>
+
+          <h3>
+            Support Students
+          </h3>
+
+          <p>
+            Your contribution helps support the hands-on
+            work that goes into the Sunseeker project.
+          </p>
+
+        </article>
+
+
+        <article class="impact-card">
+
+          <div class="impact-icon">
+            🏁
+          </div>
+
+          <h3>
+            Follow the Journey
+          </h3>
+
+          <p>
+            Follow our team as we prepare, test, travel,
+            and compete with Sunseeker.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CELL SELECTOR
+         ========================================= -->
+
+    <section
+      class="content-section cells-section"
+      id="cells"
+    >
+
+      <div class="section-heading">
+
+        <span class="section-label">
+          THE SOLAR ARRAY
+        </span>
+
+        <h2>
+          Choose your cell.
+        </h2>
+
+        <p>
+          Click an available cell to view its details.
+          Available cells are shown in green and adopted
+          cells are shown in gold.
+        </p>
+
+      </div>
+
+
+      <div class="car-card">
+
+        <div class="car-header">
+
+          <div>
+
+            <span class="car-label">
+              SUNSEEKER SOLAR ARRAY
+            </span>
+
+            <h3>
+              Pick your place on the car
+            </h3>
+
+          </div>
+
+
+          <div
+            class="selected-indicator"
+            id="selectedIndicator"
+          >
+
+            <span
+              class="indicator-dot"
+              id="indicatorDot"
+            ></span>
+
+            <span id="selectedText">
+              Select a cell
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- SOLAR CAR -->
+
+        <div class="car">
+
+          <div class="car-top">
+
+            <div class="car-cockpit">
+              <span>COCKPIT</span>
+            </div>
+
+            <div
+              class="solar-array"
+              id="solarArray"
+              aria-label="Sunseeker solar cell array"
+            >
+              <!-- JavaScript creates the cells -->
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- LEGEND -->
+
+        <div class="legend">
+
+          <div class="legend-item">
+            <span class="legend-box available"></span>
+            Available
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-box adopted"></span>
+            Adopted
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-box selected"></span>
+            Selected
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         HOW IT WORKS
+         ========================================= -->
+
+    <section
+      class="content-section"
+      id="how-it-works"
+    >
+
+      <div class="section-heading">
+
+        <span class="section-label">
+          HOW IT WORKS
+        </span>
+
+        <h2>
+          Three simple steps.
+        </h2>
+
+      </div>
+
+
+      <div class="steps">
+
+        <div class="step">
+
+          <div class="step-number">
+            01
+          </div>
+
+          <h3>
+            Choose a Cell
+          </h3>
+
+          <p>
+            Explore the solar array and select an
+            available cell you'd like to adopt.
+          </p>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            02
+          </div>
+
+          <h3>
+            Tell Us About You
+          </h3>
+
+          <p>
+            Enter the name you'd like associated with
+            your adoption.
+          </p>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            03
+          </div>
+
+          <h3>
+            Support Sunseeker
+          </h3>
+
+          <p>
+            Complete your $25 contribution through
+            the payment system once it is connected.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CALL TO ACTION
+         ========================================= -->
+
+    <section class="cta">
+
+      <div class="cta-content">
+
+        <span class="section-label">
+          JOIN THE JOURNEY
+        </span>
+
+        <h2>
+          Every cell helps move us forward.
+        </h2>
+
+        <p>
+          Become part of the community supporting
+          Western Michigan University's Sunseeker
+          Solar Car Project.
+        </p>
+
+        <a href="#cells" class="cta-button">
+          Adopt a Cell
+          <span>→</span>
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================
+       CELL MODAL
+       ========================================= -->
+
+  <div
+    class="modal"
+    id="cellModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+    ></div>
+
+
+    <div
+      class="modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="selectedCell"
+    >
+
+      <button
+        class="modal-close"
+        id="closeModal"
+        type="button"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+
+      <!-- =====================================
+           AVAILABLE CELL
+           ===================================== -->
+
+      <div id="cellDetails">
+
+        <div
+          class="modal-status available"
+          id="cellStatus"
+        >
+          AVAILABLE
+        </div>
+
+        <span class="modal-label">
+          SOLAR ARRAY
+        </span>
+
+        <h2 id="selectedCell">
+          Cell #001
+        </h2>
+
+        <p>
+          This individual solar cell represents a small
+          part of the solar array associated with the
+          Sunseeker project.
+        </p>
+
+        <div class="modal-price">
+          <span>$25</span>
+          <small>one-time contribution</small>
+        </div>
+
+        <button
+          class="primary-button"
+          id="adoptButton"
+          type="button"
+        >
+          Adopt This Cell
+          <span>→</span>
+        </button>
+
+      </div>
+
+
+      <!-- =====================================
+           CHECKOUT
+           ===================================== -->
+
+      <div
+        id="checkout"
+        class="checkout"
+        hidden
+      >
+
+        <span class="modal-label">
+          YOUR CELL
+        </span>
+
+        <h2>
+          Make it yours.
+        </h2>
+
+        <p>
+          You're choosing
+          <strong id="checkoutCell">
+            Cell #001
+          </strong>.
+        </p>
+
+
+        <div class="form-group">
+
+          <label for="donorName">
+            Name to Display
+          </label>
+
+          <input
+            type="text"
+            id="donorName"
+            placeholder="Your name, family, or organization"
+            autocomplete="name"
+            maxlength="100"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="donorEmail">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="donorEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
+            maxlength="150"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="displayPreference">
+            Display Preference
+          </label>
+
+          <select id="displayPreference">
+
+            <option value="name">
+              Display my name
+            </option>
+
+            <option value="family">
+              Display my family name
+            </option>
+
+            <option value="organization">
+              Display my organization
+            </option>
+
+            <option value="private">
+              Keep my name private
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="payment-notice">
+
+          <strong>
+            Payment
+          </strong>
+
+          <p>
+            Payment is not connected yet. When your
+            payment link is ready, it can be added to
+            this page without rebuilding the adoption
+            interface.
+          </p>
+
+        </div>
+
+
+        <button
+          class="primary-button"
+          id="paymentButton"
+          type="button"
+        >
+          Continue to Payment — $25
+          <span>→</span>
+        </button>
+
+
+        <button
+          class="back-button"
+          id="backButton"
+          type="button"
+        >
+          ← Back to Cell
+        </button>
+
+      </div>
+
+
+      <!-- =====================================
+           ADOPTED CELL
+           ===================================== -->
+
+      <div
+        id="adoptedDetails"
+        class="adopted-details"
+        hidden
+      >
+
+        <div class="adopted-symbol">
+          ✓
+        </div>
+
+        <div class="modal-status adopted">
+          ALREADY ADOPTED
+        </div>
+
+        <h2 id="adoptedCellTitle">
+          Cell #001
+        </h2>
+
+        <p>
+          This cell has already been adopted by a
+          Sunseeker supporter.
+        </p>
+
+        <div
+          class="adopter-name"
+          id="adopterName"
+        >
+          Sunseeker Supporter
+        </div>
+
+        <button
+          class="secondary-button"
+          id="adoptedCloseButton"
+          type="button"
+        >
+          Choose Another Cell
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       FOOTER
+       ========================================= -->
+
+  <footer id="contact">
+
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+
+        <div class="logo">
+          <span class="logo-sun">☀</span>
+          SUNSEEKER
+        </div>
+
+        <p>
+          Western Michigan University's
+          solar car project.
+        </p>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <h4>
+          Adopt a Cell
+        </h4>
+
+        <a href="#about">
+          About
+        </a>
+
+        <a href="#cells">
+          Choose a Cell
+        </a>
+
+        <a href="#how-it-works">
+          How It Works
+        </a>
+
+      </div>
+
+
+      <div class="footer-contact">
+
+        <h4>
+          Sunseeker
+        </h4>
+
+        <p>
+          Western Michigan University
+        </p>
+
+        <p>
+          Kalamazoo, Michigan
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+      <p>
+        © <span id="currentYear"></span>
+        Sunseeker Solar Car Project
+      </p>
+
+      <p>
+        Every cell helps move us forward.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================================
+       JAVASCRIPT
+       ========================================= -->
+
+  <script src="Adoptacell.js"></script>
+
+</body>
+</html>
