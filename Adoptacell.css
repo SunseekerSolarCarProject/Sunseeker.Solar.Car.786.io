@@ -1,14 +1,19 @@
 /* =========================================
    SUNSEEKER — ADOPT A CELL
    PAGE STYLES
+   :root {
+  --wmu-brown: #4A2E2A;
+  --wmu-gold: #F2B705;
+  --wmu-gold-dark: #C99700;
+  --wmu-light: #F6F7F8;
    ========================================= */
 
 :root {
-  --green: #16834b;
-  --dark-green: #0b4d2c;
-  --deep-green: #07351f;
+  --green: #F2B705;
+  --dark-green: #C99700;
+  --deep-green: #4A2E2A;
 
-  --purple: #4b2a78;
+  --purple: #4b392e;
   --light-purple: #f0eafb;
 
   --gold: #f4c542;
