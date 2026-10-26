@@ -11,15 +11,18 @@ function createCells() {
   const array = $('solarArray');
   if (!array) return;
   array.replaceChildren();
-  // 12 rows x 32 columns. Front is on the LEFT; the rear is square.
-  // This is a proportional illustration, not an engineering cell-placement map.
-  const rows = 12, columns = 32;
+  // 8 rows x 48 columns = 384 selectable regions.
+  // Coordinates are fitted to the uploaded 390x142 reference image.
+  // The real engineering cell boundaries are not documented by this screenshot;
+  // these are equal-width selectable regions approximating their positions.
+  const rows = 8, columns = 48;
+  const imageWidth = 390, imageHeight = 142;
+  const topY = 25, bottomY = 117, rearX = 374;
   for (let row = 0; row < rows; row++) {
-    const y = (row + .5) / rows;
-    const distance = Math.abs(y - .5) / .5;
-    // Rounded tapered nose, widening into a straight-sided rear.
-    const left = 4 + 23 * Math.pow(distance, 1.7);
-    const right = 98;
+    const centerY = topY + (row + 0.5) * (bottomY - topY) / rows;
+    const distance = Math.abs((row + 0.5) / rows - 0.5) * 2;
+    const frontX = 46 + 135 * Math.pow(distance, 1.65);
+    const rowWidth = rearX - frontX;
     for (let col = 0; col < columns; col++) {
       const number = row * columns + col + 1;
       const cell = document.createElement('button');
@@ -27,10 +30,10 @@ function createCells() {
       cell.type = 'button';
       cell.className = `cell ${adopted ? 'adopted' : 'available'}`;
       cell.dataset.cellNumber = number;
-      cell.style.left = `${left + (right - left) * col / columns}%`;
-      cell.style.top = `${row * 100 / rows}%`;
-      cell.style.width = `${(right - left) / columns}%`;
-      cell.style.height = `${100 / rows}%`;
+      cell.style.left = `${100 * (frontX + col * rowWidth / columns) / imageWidth}%`;
+      cell.style.top = `${100 * (topY + row * (bottomY - topY) / rows) / imageHeight}%`;
+      cell.style.width = `${100 * rowWidth / columns / imageWidth}%`;
+      cell.style.height = `${100 * (bottomY - topY) / rows / imageHeight}%`;
       cell.setAttribute('aria-label', `Cell ${fmt(number)}, ${adopted ? 'adopted' : 'available'}`);
       const label = document.createElement('span');
       label.className = 'cell-number';
