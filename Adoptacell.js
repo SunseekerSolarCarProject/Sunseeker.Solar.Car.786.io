@@ -5,10 +5,13 @@ import { getFirestore, collection, doc, onSnapshot, writeBatch, serverTimestamp 
 import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
 const firebaseConfig = {
-  apiKey: 'PASTE_API_KEY',
-  authDomain: 'PASTE_PROJECT_ID.firebaseapp.com',
-  projectId: 'PASTE_PROJECT_ID',
-  appId: 'PASTE_APP_ID'
+  apiKey: 'AIzaSyBxTRmHKXJoKyJq7PK_pifrFC49Dl17rNo',
+  authDomain: 'sunseeker-adopt-a-ce.firebaseapp.com',
+  projectId: 'sunseeker-adopt-a-ce',
+  storageBucket: 'sunseeker-adopt-a-ce.firebasestorage.app',
+  messagingSenderId: '709916570050',
+  appId: '1:709916570050:web:3c737630692783f097265b',
+  measurementId: 'G-QF8533PDQS'
 };
 const configured = !Object.values(firebaseConfig).some(v => v.startsWith('PASTE_'));
 const TOTAL_CELLS = 384;
@@ -126,22 +129,33 @@ $('modalOverlay')?.addEventListener('click',closeModal);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('cellModal')?.classList.contains('active'))closeModal();});
 if($('currentYear'))$('currentYear').textContent=new Date().getFullYear();
 createCells();
-if(configured) {
+if (configured) {
   try {
-    const app=initializeApp(firebaseConfig);
-    db=getFirestore(app);
-    auth=getAuth(app);
-    awaitAuthAndSubscribe();
-  } catch(error) {console.error('Firebase initialization failed',error);}
-} else console.warn('Add your Firebase web config to Adoptacell.js before accepting reservations.');
-
-async function awaitAuthAndSubscribe() {
-  try {
-    await signInAnonymously(auth);
-    onSnapshot(collection(db,'cellReservations'),snapshot=>{
-      Object.keys(reservedCells).forEach(k=>delete reservedCells[k]);
-      snapshot.forEach(d=>{const x=d.data();if(Number.isInteger(x.cellNumber)&&x.cellNumber>=1&&x.cellNumber<=384&&typeof x.displayName==='string')reservedCells[x.cellNumber]=x.displayName;});
-      ready=true;createCells();
-    },error=>{console.error('Firestore connection failed',error);ready=false;updateCounts();});
-  } catch(error) {console.error('Firebase anonymous sign-in failed',error);ready=false;updateCounts();}
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    signInAnonymously(auth).then(() => {
+      onSnapshot(collection(db, 'cellReservations'), snapshot => {
+        Object.keys(reservedCells).forEach(k => delete reservedCells[k]);
+        snapshot.forEach(d => {
+          const x = d.data();
+          if (Number.isInteger(x.cellNumber) && x.cellNumber >= 1 && x.cellNumber <= 384 && typeof x.displayName === 'string') {
+            reservedCells[x.cellNumber] = x.displayName;
+          }
+        });
+        ready = true;
+        createCells();
+      }, error => {
+        console.error('Firestore connection failed', error);
+        ready = false;
+        updateCounts();
+      });
+    }).catch(error => {
+      console.error('Anonymous authentication failed', error);
+      ready = false;
+      updateCounts();
+    });
+  } catch(error) {
+    console.error('Firebase initialization failed', error);
+  }
 }
