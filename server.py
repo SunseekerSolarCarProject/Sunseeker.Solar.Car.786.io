@@ -9,6 +9,10 @@ import json
 import os
 import re
 import sqlite3
+import smtplib
+import ssl
+import logging
+from email.message import EmailMessage
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -46,6 +50,46 @@ def init_db():
             payment_status TEXT NOT NULL DEFAULT 'pending',
             reserved_at TEXT NOT NULL
         )''')
+
+def notify_team(cell, name, email, preference):
+    """Email the team after a committed reservation. Never email from browser code."""
+    host = os.environ.get('SUNSEEKER_SMTP_HOST', '').strip()
+    username = os.environ.get('SUNSEEKER_SMTP_USER', '').strip()
+    password = os.environ.get('SUNSEEKER_SMTP_PASSWORD', '')
+    sender = os.environ.get('SUNSEEKER_SMTP_FROM', username).strip()
+    recipient = os.environ.get('SUNSEEKER_NOTIFY_TO', 'sunseeker@wmich.edu').strip()
+    if not (host and sender):
+        logging.warning('Reservation saved, but notification email is not configured')
+        return False
+    port = int(os.environ.get('SUNSEEKER_SMTP_PORT', '587'))
+    msg = EmailMessage()
+    msg['Subject'] = f'Sunseeker Adopt a Cell: Reservation #{cell:03d}'
+    msg['From'] = sender
+    msg['To'] = recipient
+    msg.set_content(
+        f'New Sunseeker solar cell reservation\n\n'
+        f'Cell: #{cell:03d}\nName: {name}\nEmail: {email}\n'
+        f'Public display preference: {preference}\n'
+        f'Contribution: $20 (NOT YET PAID)\n'
+        f'Status: Reserved — follow up for payment\n\n'
+        'This email is an internal notification. Do not publish the donor email.'
+    )
+    try:
+        if port == 465:
+            with smtplib.SMTP_SSL(host, port, timeout=12, context=ssl.create_default_context()) as smtp:
+                if username and password:
+                    smtp.login(username, password)
+                smtp.send_message(msg)
+        else:
+            with smtplib.SMTP(host, port, timeout=12) as smtp:
+                smtp.starttls(context=ssl.create_default_context())
+                if username and password:
+                    smtp.login(username, password)
+                smtp.send_message(msg)
+        return True
+    except (smtplib.SMTPException, OSError) as exc:
+        logging.error('Reservation saved but email delivery failed: %s', type(exc).__name__)
+        return False
 
 class Handler(BaseHTTPRequestHandler):
     def send_json(self, status, data):
@@ -134,7 +178,8 @@ class Handler(BaseHTTPRequestHandler):
                     (cell_number, donor_name, donor_email, display_name, display_preference, reserved_at)
                     VALUES (?, ?, ?, ?, ?, ?)''',
                     (cell, name, email, public_name, preference, datetime.now(timezone.utc).isoformat()))
-            return self.send_json(201, {'cellNumber': cell, 'displayName': public_name, 'status': 'reserved', 'paymentStatus': 'pending'})
+            notified = notify_team(cell, name, email, preference)
+            return self.send_json(201, {'cellNumber': cell, 'displayName': public_name, 'status': 'reserved', 'paymentStatus': 'pending', 'teamEmailSent': notified})
         except sqlite3.IntegrityError:
             return self.send_json(409, {'error': 'This cell is already reserved. Please choose another.'})
         except (ValueError, TypeError, json.JSONDecodeError):
