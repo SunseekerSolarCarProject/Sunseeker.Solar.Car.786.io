@@ -1,11 +1,9 @@
-# Sunseeker Firebase setup
+Sunseeker email submission fix
 
-Firebase project configuration is already inserted in Adoptacell.js.
+The previous Adoptacell.js contained an incorrectly escaped email validation regex, rejecting normal email addresses. This copy fixes that.
 
-1. Firebase Console → Authentication → Sign-in method → Anonymous → Enabled.
-2. Firestore Database → Rules: replace with firestore.rules in this ZIP and Publish. These rules are specifically designed for the paired public/private write.
-3. Upload Adoptacell.html, Adoptacell.css, Adoptacell.js to the same folder in your GitHub Pages repository. Keep the original Styles.css and sunseeker-car-reference.png image alongside them. Check filename capitalization.
-4. Visit the deployed GitHub Pages URL, select an available cell, and submit a test reservation. Check both Firestore collections: cellReservations (public) and reservationContacts (private). Open a second device/browser to verify the lock.
-5. Delete test reservations manually using the Firebase Console before public launch. The public site cannot delete them.
+Upload Adoptacell.js to the same GitHub Pages directory as Adoptacell.html (case sensitive). The other included files are unchanged backups; do not replace your car image or styling unnecessarily. Hard-refresh the live page and test with a new unreserved cell.
 
-Important: Email addresses and dedications are private Firestore documents; never grant public read on reservationContacts. Public names are readable by anyone. Anonymous authentication does not stop spam; add App Check/abuse prevention and test security before sharing broadly. No payment is collected. Firebase configuration is a public web identifier, not a secret service-account key. Live deployment has not been tested.
+If a reservation still fails, open F12 > Console and look for Reservation error or Anonymous authentication failed. A permission-denied error can indicate the deployed Firestore rules do not match the bundled firestore.rules. Do not make Firestore public.
+
+Note: The client-only anonymous reservation model remains vulnerable to spam and automated fake reservations. Test with nonpersonal data until the security/privacy behavior has been verified.
