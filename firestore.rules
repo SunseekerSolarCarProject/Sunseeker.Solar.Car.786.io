@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function validId(id) {
+      return id.matches('^(00[1-9]|0[1-9][0-9]|[1-2][0-9][0-9]|3[0-7][0-9]|38[0-4])$');
+    }
+    function privateAfter(id) {
+      return getAfter(/databases/$(database)/documents/reservationContacts/$(id)).data;
+    }
+    function publicAfter(id) {
+      return getAfter(/databases/$(database)/documents/cellReservations/$(id)).data;
+    }
+    match /cellReservations/{id} {
+      allow read: if true;
+      allow create: if request.auth != null && validId(id)
+        && request.resource.data.keys().hasOnly(['cellNumber','displayName','createdAt'])
+        && request.resource.data.keys().hasAll(['cellNumber','displayName','createdAt'])
+        && request.resource.data.cellNumber is int
+        && request.resource.data.cellNumber == int(id)
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() >= 1
+        && request.resource.data.displayName.size() <= 100
+        && request.resource.data.createdAt == request.time
+        && privateAfter(id).ownerUid == request.auth.uid
+        && privateAfter(id).cellNumber == int(id)
+        && request.resource.data.displayName == (privateAfter(id).showName == true ? privateAfter(id).requestedDisplayName : 'Anonymous Sunseeker Supporter');
+      allow update, delete: if false;
+    }
+    match /reservationContacts/{id} {
+      // No client can read contact data, including the person who submitted it.
+      // Authorized Sunseeker administrators can review it in Firebase Console.
+      allow read, update, delete: if false;
+      allow create: if request.auth != null && validId(id)
+        && request.resource.data.keys().hasOnly(['cellNumber','ownerUid','fullName','email','requestedDisplayName','dedication','showName','paymentStatus','createdAt'])
+        && request.resource.data.keys().hasAll(['cellNumber','ownerUid','fullName','email','requestedDisplayName','dedication','showName','paymentStatus','createdAt'])
+        && request.resource.data.cellNumber is int
+        && request.resource.data.cellNumber == int(id)
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.fullName is string
+        && request.resource.data.fullName.size() >= 1
+        && request.resource.data.fullName.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.size() >= 3
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.email.matches('^[^ @]+@[^ @]+[.][^ @]+$')
+        && request.resource.data.requestedDisplayName is string
+        && request.resource.data.requestedDisplayName.size() >= 1
+        && request.resource.data.requestedDisplayName.size() <= 100
+        && request.resource.data.dedication is string
+        && request.resource.data.dedication.size() <= 200
+        && request.resource.data.showName is bool
+        && request.resource.data.paymentStatus == 'pending'
+        && request.resource.data.createdAt == request.time
+        && publicAfter(id).cellNumber == int(id)
+        && publicAfter(id).displayName == (request.resource.data.showName == true ? request.resource.data.requestedDisplayName : 'Anonymous Sunseeker Supporter');
+    }
+  }
+}
