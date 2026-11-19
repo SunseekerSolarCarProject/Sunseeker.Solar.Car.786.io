@@ -3,7 +3,8 @@ const TOTAL_CELLS = 384;
 const CELL_PRICE = 20;
 const reservedCells = {};
 let selectedCellNumber = null;
-let availabilityLoaded = false;
+const STORAGE_KEY = 'sunseeker-cell-reservations-v1';
+let availabilityLoaded = true;
 const $ = id => document.getElementById(id);
 const fmt = n => String(n).padStart(3, '0');
 const hasReservation = n => Object.prototype.hasOwnProperty.call(reservedCells, n);
@@ -30,7 +31,7 @@ function createCells() {
       cell.style.top = `${100 * (topY + row * (bottomY - topY) / rows) / imageHeight}%`;
       cell.style.width = `${100 * rowWidth / columns / imageWidth}%`;
       cell.style.height = `${100 * (bottomY - topY) / rows / imageHeight}%`;
-      cell.disabled = !availabilityLoaded;
+      cell.disabled = false; // Allow inspection even if the reservation server is offline.
       cell.setAttribute('aria-label', `Cell ${fmt(number)}, ${reserved ? 'reserved' : 'available'}`);
       const label = document.createElement('span');
       label.className = 'cell-number';
@@ -54,7 +55,6 @@ function showSection(id) {
   });
 }
 function openCell(number) {
-  if (!availabilityLoaded) return;
   selectedCellNumber = number;
   document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
   const button = document.querySelector(`[data-cell-number="${number}"]`);
@@ -82,7 +82,7 @@ function closeModal() {
   if ($('selectedText')) $('selectedText').textContent = 'Select a cell';
   if ($('indicatorDot')) $('indicatorDot').style.background = '#8b9690';
   if ($('donorName')) $('donorName').value = '';
-  if ($('donorEmail')) $('donorEmail').value = '';
+
   if ($('reservationError')) $('reservationError').hidden = true;
   showSection('cellDetails');
 }
@@ -96,54 +96,37 @@ function showError(message) {
   if (element) { element.textContent = message; element.hidden = false; }
   else alert(message);
 }
-async function loadReservedCells() {
-  availabilityLoaded = false;
-  createCells();
+function loadReservedCells() {
   try {
-    const response = await fetch('/api/cell-reservations', { cache: 'no-store' });
-    if (!response.ok) throw new Error('Could not retrieve cell availability');
-    const reservations = await response.json();
-    if (!Array.isArray(reservations)) throw new Error('Invalid availability response');
-    Object.keys(reservedCells).forEach(key => delete reservedCells[key]);
-    reservations.forEach(({ cellNumber, displayName }) => {
-      if (Number.isInteger(cellNumber) && cellNumber >= 1 && cellNumber <= TOTAL_CELLS)
-        reservedCells[cellNumber] = displayName || 'Sunseeker Supporter';
-    });
-    availabilityLoaded = true;
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (!stored || typeof stored !== 'object' || Array.isArray(stored)) throw Error('Invalid stored data');
+    for (const [key, value] of Object.entries(stored)) {
+      const number = Number(key);
+      if (Number.isInteger(number) && number >= 1 && number <= TOTAL_CELLS && typeof value === 'string') {
+        reservedCells[number] = value;
+      }
+    }
   } catch (error) {
-    console.error('Reservation availability unavailable', error);
-    if ($('selectedText')) $('selectedText').textContent = 'Reservations temporarily unavailable';
+    console.warn('Could not load local reservations', error);
+    showError('Your browser is blocking local storage. Reservations may not be saved.');
   }
   createCells();
 }
-async function reserveCell() {
+function reserveCell() {
   const name = $('donorName')?.value.trim();
-  const email = $('donorEmail')?.value.trim();
-  const displayPreference = $('displayPreference')?.value || 'name';
   const cellNumber = selectedCellNumber;
   if ($('reservationError')) $('reservationError').hidden = true;
-  if (!name || name.length > 100) return showError('Please enter a display name (up to 100 characters).');
-  if (!email || email.length > 150 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Please enter a valid email address.');
-  if (!cellNumber || hasReservation(cellNumber) || !availabilityLoaded) return showError('This cell is not available.');
-  const button = $('paymentButton');
-  if (button) button.disabled = true;
+  if (!name || name.length > 100) return showError('Enter a display name (up to 100 characters).');
+  if (!cellNumber || hasReservation(cellNumber)) return showError('This cell is already reserved.');
   try {
-    const response = await fetch('/api/cell-reservations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cellNumber, donorName: name, donorEmail: email, displayPreference })
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || 'Unable to reserve cell.');
-    reservedCells[cellNumber] = result.displayName || 'Sunseeker Supporter';
+    const next = { ...reservedCells, [cellNumber]: name };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    reservedCells[cellNumber] = name;
     closeModal();
     createCells();
-    alert(`Cell #${fmt(cellNumber)} is reserved! No payment was collected. The Sunseeker team will contact you at ${email} about the $${CELL_PRICE} contribution.`);
+    alert(`Cell #${fmt(cellNumber)} is marked reserved for ${name} on this browser. No payment collected. This does not reserve it for other visitors.`);
   } catch (error) {
-    showError(error.message);
-    if (/already reserved/i.test(error.message)) await loadReservedCells();
-  } finally {
-    if (button) button.disabled = false;
+    showError('Your browser did not save the reservation. Enable local storage or open the site in a normal browser window.');
   }
 }
 $('adoptButton')?.addEventListener('click', showCheckout);

@@ -315,3 +315,11 @@ body { background:linear-gradient(180deg,#fff8e9 0%,#f7f1e8 40%,#fffdf8 100%); }
 .car-cockpit { display:grid;z-index:3;left:47%;width:13%;height:24%;background:linear-gradient(135deg,#171d20,#39434a);border-color:#d9ad44; }
 /* Only show the CSS cockpit on the fallback, not over a real car photograph. */
 .car-top:has(.solar-array) .car-cockpit { pointer-events:none; }
+
+/* Interaction fix: keep decorative layers behind actual buttons. */
+.car-top::before,.car-top::after,.car-cockpit { pointer-events:none !important; }
+.car-top::before,.car-top::after { z-index:0 !important; }
+.solar-array { z-index:10 !important; pointer-events:auto !important; }
+.solar-array .cell { pointer-events:auto !important; cursor:pointer !important; z-index:1; }
+.solar-array .cell:hover { z-index:20 !important; }
+.solar-array .cell.selected { z-index:21 !important; }
