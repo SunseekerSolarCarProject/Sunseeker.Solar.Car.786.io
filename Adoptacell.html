@@ -106,7 +106,7 @@
 
     <div class="adopt-stat">
       <strong id="adoptedCount">0</strong>
-      <span>Cells Adopted</span>
+      <span>Cells Reserved</span>
     </div>
 
     <div class="adopt-stat">
@@ -236,8 +236,8 @@
 
         <p>
           Click an available cell to view its details.
-          Available cells are shown in brown and adopted
-          cells are shown in gold.
+          Available cells are shown in gold and reserved
+          cells are shown in brown.
         </p>
 
       </div>
@@ -315,7 +315,7 @@
 
           <div class="legend-item">
             <span class="legend-box adopted"></span>
-            Adopted
+            Reserved
           </div>
 
           <div class="legend-item">
@@ -383,8 +383,7 @@
           </h3>
 
           <p>
-            Enter the name you'd like associated with
-            your adoption.
+            Enter a display name and contact email so we can follow up.
           </p>
 
         </div>
@@ -401,8 +400,7 @@
           </h3>
 
           <p>
-            Complete your $20 contribution through
-            the payment system once it is connected.
+            Reserve now at no charge. Our team will email you later about the $20 contribution.
           </p>
 
         </div>
@@ -435,7 +433,7 @@
         </p>
 
         <a href="#cells" class="cta-button">
-          Adopt a Cell
+          Reserve a Cell
           <span>→</span>
         </a>
 
@@ -516,7 +514,7 @@
           id="adoptButton"
           type="button"
         >
-          Adopt This Cell
+          Reserve This Cell
           <span>→</span>
         </button>
 
@@ -615,25 +613,24 @@
         <div class="payment-notice">
 
           <strong>
-            Payment
+            Reserve today, pay later
           </strong>
 
           <p>
-            Payment is not connected yet. Your selection is not reserved. When your
-            payment link is ready, it can be added to
-            this page without rebuilding the adoption
-            interface.
+            No payment is collected today. Reserving a cell commits you to a future $20 contribution. The Sunseeker team will email you with payment instructions when they are available.
           </p>
 
         </div>
 
+
+        <p class="reservation-error" id="reservationError" role="alert" hidden></p>
 
         <button
           class="primary-button"
           id="paymentButton"
           type="button"
         >
-          Payment Coming Soon — $20
+          Reserve My Cell — Pay Later
           <span>→</span>
         </button>
 
@@ -664,7 +661,7 @@
         </div>
 
         <div class="modal-status adopted">
-          ALREADY ADOPTED
+          ALREADY RESERVED
         </div>
 
         <h2 id="adoptedCellTitle">
@@ -672,7 +669,7 @@
         </h2>
 
         <p>
-          This cell has already been adopted by a
+          This cell has already been reserved by a
           Sunseeker supporter.
         </p>
 
@@ -781,7 +778,7 @@
        JAVASCRIPT
        ========================================= -->
 
-  <script src="Adoptacell.js"></script>
+  <script src="Adoptacell.js" defer></script>
 
 </body>
 </html>

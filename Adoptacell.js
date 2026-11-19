@@ -1,40 +1,37 @@
-/* Sunseeker Adopt a Cell — 384-cell frontend prototype */
+/* Sunseeker Adopt a Cell — reservations, no payments collected */
 const TOTAL_CELLS = 384;
 const CELL_PRICE = 20;
-const PAYMENT_URL = ""; // Connect a verified checkout backend before accepting payments.
-const adoptedCells = {}; // Replace with confirmed adoptions fetched from your server.
+const reservedCells = {};
 let selectedCellNumber = null;
+let availabilityLoaded = false;
 const $ = id => document.getElementById(id);
 const fmt = n => String(n).padStart(3, '0');
+const hasReservation = n => Object.prototype.hasOwnProperty.call(reservedCells, n);
 
 function createCells() {
   const array = $('solarArray');
   if (!array) return;
   array.replaceChildren();
-  // 8 rows x 48 columns = 384 selectable regions.
-  // Coordinates are fitted to the uploaded 390x142 reference image.
-  // The real engineering cell boundaries are not documented by this screenshot;
-  // these are equal-width selectable regions approximating their positions.
   const rows = 8, columns = 48;
   const imageWidth = 390, imageHeight = 142;
   const topY = 25, bottomY = 117, rearX = 374;
   for (let row = 0; row < rows; row++) {
-    const centerY = topY + (row + 0.5) * (bottomY - topY) / rows;
     const distance = Math.abs((row + 0.5) / rows - 0.5) * 2;
     const frontX = 46 + 135 * Math.pow(distance, 1.65);
     const rowWidth = rearX - frontX;
     for (let col = 0; col < columns; col++) {
       const number = row * columns + col + 1;
       const cell = document.createElement('button');
-      const adopted = Object.prototype.hasOwnProperty.call(adoptedCells, number);
+      const reserved = hasReservation(number);
       cell.type = 'button';
-      cell.className = `cell ${adopted ? 'adopted' : 'available'}`;
+      cell.className = `cell ${reserved ? 'adopted' : 'available'}`;
       cell.dataset.cellNumber = number;
       cell.style.left = `${100 * (frontX + col * rowWidth / columns) / imageWidth}%`;
       cell.style.top = `${100 * (topY + row * (bottomY - topY) / rows) / imageHeight}%`;
       cell.style.width = `${100 * rowWidth / columns / imageWidth}%`;
       cell.style.height = `${100 * (bottomY - topY) / rows / imageHeight}%`;
-      cell.setAttribute('aria-label', `Cell ${fmt(number)}, ${adopted ? 'adopted' : 'available'}`);
+      cell.disabled = !availabilityLoaded;
+      cell.setAttribute('aria-label', `Cell ${fmt(number)}, ${reserved ? 'reserved' : 'available'}`);
       const label = document.createElement('span');
       label.className = 'cell-number';
       label.textContent = fmt(number);
@@ -46,38 +43,39 @@ function createCells() {
   updateCounts();
 }
 function updateCounts() {
-  const adopted = Object.keys(adoptedCells).length;
-  if ($('availableCount')) $('availableCount').textContent = TOTAL_CELLS - adopted;
-  if ($('adoptedCount')) $('adoptedCount').textContent = adopted;
+  const reserved = Object.keys(reservedCells).length;
+  if ($('availableCount')) $('availableCount').textContent = availabilityLoaded ? TOTAL_CELLS - reserved : '—';
+  if ($('adoptedCount')) $('adoptedCount').textContent = availabilityLoaded ? reserved : '—';
   if ($('totalCount')) $('totalCount').textContent = TOTAL_CELLS;
 }
 function showSection(id) {
-  ['cellDetails','checkout','adoptedDetails'].forEach(name => {
+  ['cellDetails', 'checkout', 'adoptedDetails'].forEach(name => {
     if ($(name)) $(name).hidden = name !== id;
   });
 }
 function openCell(number) {
+  if (!availabilityLoaded) return;
   selectedCellNumber = number;
   document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
   const button = document.querySelector(`[data-cell-number="${number}"]`);
   if (button) button.classList.add('selected');
-  ['selectedCell','checkoutCell','adoptedCellTitle'].forEach(id => {
+  ['selectedCell', 'checkoutCell', 'adoptedCellTitle'].forEach(id => {
     if ($(id)) $(id).textContent = `Cell #${fmt(number)}`;
   });
   if ($('selectedText')) $('selectedText').textContent = `Cell #${fmt(number)}`;
-  if ($('indicatorDot')) $('indicatorDot').style.background = 'var(--gold)';
-  if (Object.prototype.hasOwnProperty.call(adoptedCells, number)) {
+  if ($('indicatorDot')) $('indicatorDot').style.background = 'var(--ad-gold)';
+  if (hasReservation(number)) {
     showSection('adoptedDetails');
-    if ($('adopterName')) $('adopterName').textContent = adoptedCells[number] || 'Sunseeker Supporter';
+    if ($('adopterName')) $('adopterName').textContent = reservedCells[number];
   } else showSection('cellDetails');
   $('cellModal').classList.add('active');
-  $('cellModal').setAttribute('aria-hidden','false');
+  $('cellModal').setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
   $('closeModal')?.focus();
 }
 function closeModal() {
   $('cellModal').classList.remove('active');
-  $('cellModal').setAttribute('aria-hidden','true');
+  $('cellModal').setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
   document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
   selectedCellNumber = null;
@@ -85,34 +83,71 @@ function closeModal() {
   if ($('indicatorDot')) $('indicatorDot').style.background = '#8b9690';
   if ($('donorName')) $('donorName').value = '';
   if ($('donorEmail')) $('donorEmail').value = '';
+  if ($('reservationError')) $('reservationError').hidden = true;
   showSection('cellDetails');
 }
 function showCheckout() {
-  if (!selectedCellNumber || Object.prototype.hasOwnProperty.call(adoptedCells, selectedCellNumber)) return;
+  if (!selectedCellNumber || hasReservation(selectedCellNumber)) return;
   showSection('checkout');
   $('donorName')?.focus();
 }
-function continueToPayment() {
+function showError(message) {
+  const element = $('reservationError');
+  if (element) { element.textContent = message; element.hidden = false; }
+  else alert(message);
+}
+async function loadReservedCells() {
+  availabilityLoaded = false;
+  createCells();
+  try {
+    const response = await fetch('/api/cell-reservations', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Could not retrieve cell availability');
+    const reservations = await response.json();
+    if (!Array.isArray(reservations)) throw new Error('Invalid availability response');
+    Object.keys(reservedCells).forEach(key => delete reservedCells[key]);
+    reservations.forEach(({ cellNumber, displayName }) => {
+      if (Number.isInteger(cellNumber) && cellNumber >= 1 && cellNumber <= TOTAL_CELLS)
+        reservedCells[cellNumber] = displayName || 'Sunseeker Supporter';
+    });
+    availabilityLoaded = true;
+  } catch (error) {
+    console.error('Reservation availability unavailable', error);
+    if ($('selectedText')) $('selectedText').textContent = 'Reservations temporarily unavailable';
+  }
+  createCells();
+}
+async function reserveCell() {
   const name = $('donorName')?.value.trim();
   const email = $('donorEmail')?.value.trim();
-  if (!name) { alert('Please enter a display name.'); $('donorName')?.focus(); return; }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert('Please enter a valid email address.'); $('donorEmail')?.focus(); return;
+  const displayPreference = $('displayPreference')?.value || 'name';
+  const cellNumber = selectedCellNumber;
+  if ($('reservationError')) $('reservationError').hidden = true;
+  if (!name || name.length > 100) return showError('Please enter a display name (up to 100 characters).');
+  if (!email || email.length > 150 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Please enter a valid email address.');
+  if (!cellNumber || hasReservation(cellNumber) || !availabilityLoaded) return showError('This cell is not available.');
+  const button = $('paymentButton');
+  if (button) button.disabled = true;
+  try {
+    const response = await fetch('/api/cell-reservations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cellNumber, donorName: name, donorEmail: email, displayPreference })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || 'Unable to reserve cell.');
+    reservedCells[cellNumber] = result.displayName || 'Sunseeker Supporter';
+    closeModal();
+    createCells();
+    alert(`Cell #${fmt(cellNumber)} is reserved! No payment was collected. The Sunseeker team will contact you at ${email} about the $${CELL_PRICE} contribution.`);
+  } catch (error) {
+    showError(error.message);
+    if (/already reserved/i.test(error.message)) await loadReservedCells();
+  } finally {
+    if (button) button.disabled = false;
   }
-  if (!selectedCellNumber || Object.prototype.hasOwnProperty.call(adoptedCells, selectedCellNumber)) {
-    alert('This cell is no longer available.'); return;
-  }
-  // IMPORTANT: Do not store donor PII in console/localStorage or mark a cell adopted here.
-  // A server must atomically reserve the cell, create a payment session with the
-  // verified $20 price, and mark adoption only after a signed payment webhook.
-  if (!PAYMENT_URL) {
-    alert('Payment is not connected yet. Your selection has not been reserved or purchased.');
-    return;
-  }
-  alert('A verified payment integration is required before checkout can open.');
 }
 $('adoptButton')?.addEventListener('click', showCheckout);
-$('paymentButton')?.addEventListener('click', continueToPayment);
+$('paymentButton')?.addEventListener('click', reserveCell);
 $('backButton')?.addEventListener('click', () => showSection('cellDetails'));
 $('closeModal')?.addEventListener('click', closeModal);
 $('adoptedCloseButton')?.addEventListener('click', closeModal);
@@ -121,4 +156,4 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && $('cellModal')?.classList.contains('active')) closeModal();
 });
 if ($('currentYear')) $('currentYear').textContent = new Date().getFullYear();
-createCells();
+loadReservedCells();
