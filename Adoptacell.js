@@ -90,13 +90,28 @@ async function reserveCell() {
   const dedication=$('dedication')?.value.trim() || '';
   const publicName=$('displayPreference')?.value==='public';
   const n=selectedCellNumber;
-  if($('reservationError'))$('reservationError').hidden=true;
-  if(!name||name.length>100)return message('Enter your full name (1–100 characters).');
-  if(!email||email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return message('Enter a valid email address.');
-  if(displayName.length>100||dedication.length>200)return message('Please shorten your display name or dedication.');
-  if(!ready||!db||!auth?.currentUser)return message('Shared reservations are not connected yet. No reservation was saved.');
-  if(!n||hasReservation(n))return message('This cell is already reserved. Please select another.');
-  const btn=$('paymentButton');btn.disabled=true;
+  
+if ($('reservationError')) $('reservationError').hidden = true;
+
+if (!name || name.length > 100)
+  return message('Enter your full name (1–100 characters).');
+
+if (!email || email.length > 254 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+  return message('Enter a valid email address.');
+
+if (displayName.length > 100 || dedication.length > 200)
+  return message('Please shorten your display name or dedication.');
+
+if (!ready || !db || !auth?.currentUser)
+  return message('Shared reservations are not connected yet. No reservation was saved.');
+
+if (!n || hasReservation(n))
+  return message('This cell is already reserved. Please select another.');
+
+const btn = $('paymentButton');
+btn.disabled = true;
+
   try {
     const id=fmt(n);
     const batch=writeBatch(db);
